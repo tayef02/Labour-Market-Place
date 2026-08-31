@@ -44,3 +44,49 @@
     background-color: #ff9800;
     color: white;
 }
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: #f5f5f5;
+}
+
+.hero h1 {
+    font-size: 40px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.hero button {
+    padding: 12px 25px;
+    background-color: dodgerblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: dodgerblue;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
