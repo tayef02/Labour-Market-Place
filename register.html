@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="auth.css">
+
+        <title>Register</title>
+    </head>
+
+    <body>
+
+        <header>
+            <nav id="navigation">
+
+                <div>
+                    <img src="assets/image1.png" alt="Logo">
+                </div>
+
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="find-workers.html">Find Workers</a></li>
+                    <li><a href="jobs.html">Jobs</a></li>
+                    <li><a href="wage-rates.html">Wage Rates</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="complaints.html">Complaints</a></li>
+                    <li><a href="about.html">About</a></li>
+
+                    <li>
+                        <a href="login.html">
+                            <button type="button">Login</button>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </header>
+
+        <main>
+
+            <section class="auth-page">
+
+                <div class="auth-box">
+
+                    <div class="auth-top">
+                        <h1>Register</h1>
+                        <p>Create your account in one minute.</p>
+                    </div>
+
+                    <form action="#" method="post">
+
+                        <div class="field">
+                            <label for="name">Full Name</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Your full name"
+                                required>
+                        </div>
+
+                        <div class="field">
+                            <label for="phone">Phone Number</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="01XXXXXXXXX"
+                                required>
+                        </div>
+
+                        <div class="field">
+                            <label for="email">Email (optional)</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com">
+                        </div>
+
+                        <div class="field">
+                            <label for="district">District</label>
+
+                            <select id="district" name="district" required>
+                                <option value>Select District</option>
+                                <option value="sylhet">Sylhet</option>
+                                <option value="dhaka">Dhaka</option>
+                                <option value="chattogram">Chattogram</option>
+                                <option value="rajshahi">Rajshahi</option>
+                                <option value="khulna">Khulna</option>
+                                <option value="barishal">Barishal</option>
+                                <option value="rangpur">Rangpur</option>
+                                <option value="mymensingh">Mymensingh</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="role">Role</label>
+
+                            <select id="role" name="role" required>
+                                <option value>Select Role</option>
+                                <option value="worker">Worker</option>
+                                <option value="client">Client</option>
+                            </select>
+
+                            <p class="note">
+                                Admin accounts are created from the admin panel
+                                only.
+                            </p>
+                        </div>
+
+                        <div class="field">
+                            <label for="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="At least 6 characters"
+                                minlength="6"
+                                required>
+                        </div>
+
+                        <div class="field">
+                            <label for="confirm">Confirm Password</label>
+                            <input
+                                type="password"
+                                id="confirm"
+                                name="confirm"
+                                placeholder="Type the password again"
+                                minlength="6"
+                                required>
+                        </div>
+
+                        <div class="field">
+
+                            <label class="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    name="terms"
+                                    required>
+
+                                <span>
+                                    I agree to the terms and conditions
+                                </span>
+                            </label>
+
+                        </div>
+
+                        <button type="submit" class="auth-button">
+                            Register
+                        </button>
+
+                    </form>
+
+                    <p class="auth-bottom">
+                        Already have an account?
+                        <a href="login.html">Login</a>
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Labour Market Place. All Rights Reserved.</p>
+        </footer>
+
+    </body>
+
+</html>
