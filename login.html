@@ -1,117 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="auth.css">
-
-    <title>Login</title>
-</head>
-
-<body>
-
-    <header>
-        <nav id="navigation">
-
-            <div>
-                <img src="assets/image1.png" alt="Logo">
-            </div>
-
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="find-workers.html">Find Workers</a></li>
-                <li><a href="jobs.html">Jobs</a></li>
-                <li><a href="wage-rates.html">Wage Rates</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="complaints.html">Complaints</a></li>
-                <li><a href="about.html">About</a></li>
-
-                <li>
-                    <a href="register.html">
-                        <button type="button">Get Started</button>
-                    </a>
-                </li>
-            </ul>
-
-        </nav>
-    </header>
-
-    <main>
-
-        <section class="auth-page">
-
-            <div class="auth-box">
-
-                <div class="auth-top">
-                    <h1>Login</h1>
-                    <p>Welcome back. Log in to your account.</p>
-                </div>
-
-                <form action="#" method="post">
-
-                    <div class="field">
-                        <label for="phone">Phone Number</label>
-
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            placeholder="01XXXXXXXXX"
-                            required
-                        >
-                    </div>
-
-                    <div class="field">
-                        <label for="password">Password</label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Your password"
-                            required
-                        >
-                    </div>
-
-                    <div class="field-row">
-
-                        <label class="checkbox-label">
-                            <input
-                                type="checkbox"
-                                name="remember"
-                            >
-
-                            <span>Remember me</span>
-                        </label>
-
-                        <a href="#">Forgot password?</a>
-
-                    </div>
-
-                    <button type="submit" class="auth-button">
-                        Login
-                    </button>
-
-                </form>
-
-                <p class="auth-bottom">
-                    Don't have an account?
-                    <a href="register.html">Register</a>
-                </p>
-
-            </div>
-
-        </section>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Labour Market Place</title>
+  </head>
+  <body>
+    <header class="bar"><nav class="container" id="nav"></nav></header>
+    <main class="container">
+      <article class="box">
+        <h2>Login</h2>
+        <p>Welcome back. Log in to your account.</p>
+        <form id="login">
+          <label
+            >Phone Number<input
+              name="phone"
+              type="tel"
+              placeholder="01XXXXXXXXX"
+              required /></label
+          ><label
+            >Password<input
+              name="password"
+              type="password"
+              placeholder="Your password"
+              required /></label
+          ><button>Login</button><small id="msg"></small>
+        </form>
+        <p>No account? <a href="register.html">Register</a></p>
+      </article>
     </main>
-
-    <footer>
-        <p>&copy; 2026 Labour Market Place. All Rights Reserved.</p>
+    <footer class="container">
+      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
     </footer>
-
-</body>
-
+    <script src="app.js"></script>
+  </body>
 </html>

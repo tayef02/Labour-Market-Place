@@ -1,67 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link rel="stylesheet" href="style.css">
-
-        <title>Labour Market Place</title>
-    </head>
-
-    <body>
-
-        <header>
-            <nav id="navigation">
-
-                <div>
-                    <img src="assets/image1.png" alt="Logo">
-                </div>
-
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="find-workers.html">Find Workers</a></li>
-                    <li><a href="jobs.html">Jobs</a></li>
-                    <li><a href="wage-rates.html">Wage Rates</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="complaints.html">Complaints</a></li>
-                    <li><a href="about.html">About</a></li>
-
-                    <li>
-                        <a href="login.html">
-                            <button type="button">Login</button>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="register.html">
-                            <button type="button">Get Started</button>
-                        </a>
-                    </li>
-                </ul>
-
-            </nav>
-        </header>
-
-        <main>
-
-            <section class="hero">
-                <h1>Find the Right Worker for Your Job</h1>
-
-                <p>
-                    Connect with skilled workers and find suitable jobs easily.
-                </p>
-
-                <button type="button">Find Workers</button>
-            </section>
-
-        </main>
-
-        <footer>
-            <p>&copy; 2026 Labour Market Place. All Rights Reserved.</p>
-        </footer>
-
-    </body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Labour Market Place</title>
+  </head>
+  <body>
+    <header class="bar"><nav class="container" id="nav"></nav></header>
+    <main class="container">
+      <section class="hero">
+        <h1>Find the Right Worker for Your Job</h1>
+        <p>Connect with skilled workers and find suitable jobs easily.</p>
+        <a href="workers.html" role="button" class="secondary">Find Workers</a>
+        <a href="jobs.html" role="button" class="outline contrast"
+          >Browse Jobs</a
+        >
+      </section>
+      <section class="grid">
+        <article class="card">
+          <h4>1. Register</h4>
+          <p>Join as a worker or a client in one minute.</p>
+        </article>
+        <article class="card">
+          <h4>2. Post or Set Up Profile</h4>
+          <p>Clients post jobs. Workers add skill, rate and availability.</p>
+        </article>
+        <article class="card">
+          <h4>3. Connect</h4>
+          <p>Call directly and agree on the work.</p>
+        </article>
+      </section>
+    </main>
+    <footer class="container">
+      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
+    </footer>
+    <script src="app.js"></script>
+  </body>
 </html>
