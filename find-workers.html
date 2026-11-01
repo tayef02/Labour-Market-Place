@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Find Workers | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="page-top">
+            <h1>Find workers</h1>
+            <p>Pick a district and a trade, then call the worker yourself.</p>
+        </section>
+
+        <div class="wrap">
+
+            <div class="panel">
+                <div class="two">
+                    <div class="field">
+                        <label for="district">District</label>
+                        <select id="district"></select>
+                    </div>
+
+                    <div class="field">
+                        <label for="skill">Trade</label>
+                        <select id="skill"></select>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-main" onclick="loadWorkers()">Search</button>
+            </div>
+
+            <div id="message" class="msg"></div>
+
+            <p class="dim" id="count"></p>
+
+            <div class="cards" id="list">
+                <p class="loading">Loading...</p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    var me = currentUser();
+    var scores = {};
+
+    layout("find-workers.html");
+
+    fillList("district", districtList, "All districts");
+    fillList("skill", tradeList, "All trades");
+
+    loadWorkers();
+
+
+    async function loadWorkers() {
+
+        document.getElementById("list").innerHTML = '<p class="loading">Loading...</p>';
+
+        var query = db.from("users")
+            .select("id, name, phone, skill, daily_rate, about, district, upazila")
+            .eq("role", "worker")
+            .eq("is_active", true);
+
+        if (val("district") != "") {
+            query = query.eq("district", val("district"));
+        }
+
+        if (val("skill") != "") {
+            query = query.eq("skill", val("skill"));
+        }
+
+        var result = await query.order("created_at", { ascending: false });
+        var rows = result.data;
+
+        if (rows == null || rows.length == 0) {
+            document.getElementById("list").innerHTML = "";
+            setText("count", "No worker found. Try a wider search.");
+            return;
+        }
+
+        var ids = [];
+
+        for (var i = 0; i < rows.length; i++) {
+            ids.push(rows[i].id);
+        }
+
+        scores = await averageStars(ids);
+
+        setText("count", rows.length + " workers found");
+
+        draw("list", rows, workerCard, "");
+    }
+
+
+    function workerCard(w) {
+
+        var phone = (me == null)
+            ? '<a href="login.html">log in to see</a>'
+            : w.phone;
+
+        return '<div class="card">'
+            + '<div class="card-head">'
+            + '<h3>' + w.name + '</h3>'
+            + '<div class="wage">Tk ' + (w.daily_rate || "-") + '<small>per day</small></div>'
+            + '</div>'
+            + '<p class="trade">' + (w.skill || "trade not set") + '</p>'
+            + '<ul class="facts">'
+            + '<li><span>Area</span> ' + area(w) + '</li>'
+            + '<li><span>Rating</span> ' + starBar(scores[w.id]) + '</li>'
+            + '<li><span>Phone</span> ' + phone + '</li>'
+            + '</ul>'
+            + '<p class="dim">' + (w.about || "") + '</p>'
+            + '</div>';
+    }
+
+    </script>
+
+</body>
+</html>

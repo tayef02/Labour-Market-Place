@@ -1,25 +1,144 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Labour Market Place</title>
-  </head>
-  <body>
-    <header class="bar"><nav class="container" id="nav"></nav></header>
-    <main class="container">
-      <h2>Complaints</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Help | Labour Market Place</title>
+</head>
 
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="page-top">
+            <h1>Help and complaints</h1>
+            <p>Tell us what went wrong. A Support Admin reads every one of these.</p>
+        </section>
+
+        <div class="wrap narrow" style="max-width: 620px;">
+
+            <div id="message" class="msg"></div>
+
+            <div class="panel" id="formBox">
+                <h2>Send a complaint</h2>
+
+                <form id="helpForm" style="margin-top: 18px;">
+
+                    <div class="field">
+                        <label for="subject">What is it about</label>
+                        <input type="text" id="subject" placeholder="Employer did not pay the agreed wage" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="details">Tell us more</label>
+                        <textarea id="details" rows="4" placeholder="Date, place, name of the other person" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-main">Send</button>
+
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>My complaints</h2>
+
+                <div class="scroll" style="margin-top: 16px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Sent on</th>
+                                <th>State</th>
+                                <th>Reply</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mine">
+                            <tr><td colspan="4" class="loading">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
     </main>
-    <footer class="container">
-      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    var me = currentUser();
+
+    layout("complaints.html");
+
+    start();
+
+
+    function start() {
+
+        if (me == null) {
+            document.getElementById("formBox").innerHTML =
+                '<h2>Send a complaint</h2><p class="note">Please <a href="login.html">log in</a> first.</p>';
+
+            document.getElementById("mine").innerHTML = noRows(4, "Log in to see your complaints.");
+            return;
+        }
+
+        document.getElementById("helpForm").addEventListener("submit", send);
+        loadMine();
+    }
+
+
+    async function send(event) {
+
+        event.preventDefault();
+
+        var result = await db.from("complaints").insert({
+            user_id: me.id,
+            user_name: me.name,
+            user_phone: me.phone,
+            subject: val("subject"),
+            details: val("details")
+        });
+
+        if (result.error != null) {
+            showMessage("Could not send it. Try again.", "error");
+            return;
+        }
+
+        showMessage("Sent. Support will look at it soon.", "success");
+
+        document.getElementById("helpForm").reset();
+        loadMine();
+    }
+
+
+    async function loadMine() {
+
+        var result = await db.from("complaints")
+            .select("subject, status, reply, created_at")
+            .eq("user_id", me.id)
+            .order("created_at", { ascending: false });
+
+        draw("mine", result.data, myRow, noRows(4, "You have not sent anything yet."));
+    }
+
+
+    function myRow(c) {
+
+        return '<tr>'
+            + '<td>' + c.subject + '</td>'
+            + '<td>' + c.created_at.substring(0, 10) + '</td>'
+            + '<td><span class="stamp ' + stampFor(c.status) + '">' + c.status + '</span></td>'
+            + '<td>' + (c.reply || '<span class="dim">waiting</span>') + '</td>'
+            + '</tr>';
+    }
+
+    </script>
+
+</body>
 </html>

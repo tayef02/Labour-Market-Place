@@ -1,34 +1,191 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport"
-            content="width=device-width,initial-scale=1"><meta
-            name="color-scheme" content="light"><link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"><link
-            rel="stylesheet" href="style.css"><title>Labour Market
-            Place</title></head><body><header class="bar"><nav class="container"
-                id="nav"></nav></header><main class="container"><article
-                class="box"><h2>Register</h2><p>Create your account in one
-                    minute.</p><form id="reg"><label>Full Name<input name="name"
-                            required></label><label>Phone Number<input
-                            name="phone" type="tel" pattern="01[0-9]{9}"
-                            title="11 digit number, 01XXXXXXXXX"
-                            placeholder="01XXXXXXXXX"
-                            required></label><label>Email (optional)<input
-                            name="email" type="email"></label><div
-                        class="grid"><label>District<select name="district"
-                                required><option
-                                    value>Select</option></select></label><label>Role<select
-                                name="role" required><option
-                                    value>Select</option><option
-                                    value="worker">Worker</option><option
-                                    value="client">Client</option></select></label></div><label>Password<input
-                            name="password" type="password" minlength="6"
-                            placeholder="At least 6 characters"
-                            required></label><label>Confirm Password<input
-                            name="confirm" type="password"
-                            required></label><label><input type="checkbox"
-                            required> I agree to the terms and
-                        conditions</label><button>Register</button><small
-                        id="msg"></small></form><p>Have an account? <a
-                        href="login.html">Login</a></p></article></main><footer
-            class="container"><small>&copy; 2026 Labour Market Place. All rights
-                reserved.</small></footer><script
-            src="app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Register | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="signin">
+        <div class="narrow" style="max-width: 520px;">
+
+            <div class="panel">
+                <h2>Make an account</h2>
+                <p class="note">Fill this once. After that you only need your phone number to log in.</p>
+
+                <div id="message" class="msg"></div>
+
+                <form id="registerForm" style="margin-top: 20px;">
+
+                    <div class="field">
+                        <label for="role">I am here to</label>
+                        <select id="role" required>
+                            <option value="">Choose one</option>
+                            <option value="worker">Work. I am looking for jobs.</option>
+                            <option value="client">Hire. I need workers.</option>
+                        </select>
+                        <p class="note">Admin accounts are made inside the admin panel only.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="name">Full name</label>
+                        <input type="text" id="name" placeholder="Your full name" required>
+                    </div>
+
+                    <div class="two">
+                        <div class="field">
+                            <label for="phone">Phone number</label>
+                            <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Not required">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="division">Division</label>
+                        <select id="division" required>
+                            <option value="">Choose division</option>
+                        </select>
+                    </div>
+
+                    <div class="two">
+                        <div class="field">
+                            <label for="district">District</label>
+                            <select id="district" required>
+                                <option value="">Choose district</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="upazila">Upazila</label>
+                            <select id="upazila" required>
+                                <option value="">Choose upazila</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="union">Union or Ward</label>
+                        <input type="text" id="union" placeholder="Name of your union or ward" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="exactLocation">Exact location</label>
+                        <input type="text" id="exactLocation" placeholder="Village, road, house number or a landmark" required>
+                    </div>
+
+                    <div class="two">
+                        <div class="field">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="6 or more" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="confirm">Type it again</label>
+                            <input type="password" id="confirm" placeholder="Same password" required>
+                        </div>
+                    </div>
+
+                    <label class="check">
+                        <input type="checkbox" required> I agree to the terms and conditions
+                    </label>
+
+                    <button type="submit" class="btn btn-main btn-wide">Create account</button>
+
+                </form>
+            </div>
+
+            <p class="under">Already have one? <a href="login.html">Log in</a></p>
+
+        </div>
+        </section>
+
+    </main>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+    <script src="locations.js"></script>
+
+    <script>
+    layout("register.html");
+
+    setupLocation("division", "district", "upazila");
+
+    document.getElementById("registerForm").addEventListener("submit", register);
+
+
+    async function register(event) {
+
+        event.preventDefault();
+
+        var phone = val("phone");
+        var password = document.getElementById("password").value;
+        var confirm = document.getElementById("confirm").value;
+
+        if (phone.length != 11) {
+            showMessage("Phone number must be 11 digits.", "error");
+            return;
+        }
+
+        if (password.length < 6) {
+            showMessage("Password must be 6 letters or more.", "error");
+            return;
+        }
+
+        if (password != confirm) {
+            showMessage("The two passwords are not the same.", "error");
+            return;
+        }
+
+        var found = await db.from("users")
+            .select("id")
+            .eq("phone", phone)
+            .maybeSingle();
+
+        if (found.data != null) {
+            showMessage("This number already has an account. Log in instead.", "error");
+            return;
+        }
+
+        var result = await db.from("users").insert({
+            name: val("name"),
+            phone: phone,
+            email: val("email"),
+            password: password,
+            role: val("role"),
+            division: val("division"),
+            district: val("district"),
+            upazila: val("upazila"),
+            union_name: val("union"),
+            exact_location: val("exactLocation")
+        });
+
+        if (result.error != null) {
+            showMessage("Could not create the account. Try again.", "error");
+            return;
+        }
+
+        showMessage("Account made. Taking you to the login page.", "success");
+
+        setTimeout(function () {
+            window.location.href = "login.html";
+        }, 1400);
+    }
+
+    </script>
+
+</body>
+</html>

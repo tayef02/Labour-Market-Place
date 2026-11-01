@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Employer | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <div class="board">
+
+            <aside class="side">
+                <div class="who">
+                    <b id="userName"></b>
+                    <span>Employer</span>
+                </div>
+
+                <ul>
+                    <li><a href="#post">Post a job</a></li>
+                    <li><a href="#mine">My job posts</a></li>
+                    <li><a href="#people">Who applied</a></li>
+                    <li><a href="#rate">Rate the workers</a></li>
+                    <li><a href="find-workers.html">Find workers</a></li>
+                </ul>
+            </aside>
+
+            <div>
+
+                <div id="message" class="msg"></div>
+
+                <div class="tiles">
+                    <div class="tile">
+                        <b id="countLive">0</b>
+                        <span>Live now</span>
+                    </div>
+                    <div class="tile">
+                        <b id="countWait">0</b>
+                        <span>Waiting for admin</span>
+                    </div>
+                    <div class="tile">
+                        <b id="countAll">0</b>
+                        <span>Posted in total</span>
+                    </div>
+                </div>
+
+                <div class="panel" id="post">
+                    <h2>Post a job</h2>
+                    <p class="note">An admin checks it first. After that every worker can see it.</p>
+
+                    <form id="jobForm" style="margin-top: 18px;">
+
+                        <div class="field">
+                            <label for="title">What is the work</label>
+                            <input type="text" id="title" placeholder="Two masons for a boundary wall" required>
+                        </div>
+
+                        <div class="two">
+                            <div class="field">
+                                <label for="skill">Trade needed</label>
+                                <select id="skill" required></select>
+                            </div>
+
+                            <div class="field">
+                                <label for="wage">Daily wage (Tk)</label>
+                                <input type="number" id="wage" placeholder="950" required>
+                            </div>
+                        </div>
+
+                        <div class="two">
+                            <div class="field">
+                                <label for="workers">How many hands</label>
+                                <input type="number" id="workers" min="1" placeholder="2" required>
+                            </div>
+
+                            <div class="field">
+                                <label for="duration">How long</label>
+                                <input type="text" id="duration" placeholder="6 days" required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="startDate">Start date</label>
+                            <input type="date" id="startDate" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="division">Division</label>
+                            <select id="division" required>
+                                <option value="">Choose division</option>
+                            </select>
+                        </div>
+
+                        <div class="two">
+                            <div class="field">
+                                <label for="district">District</label>
+                                <select id="district" required>
+                                    <option value="">Choose district</option>
+                                </select>
+                            </div>
+
+                            <div class="field">
+                                <label for="upazila">Upazila</label>
+                                <select id="upazila" required>
+                                    <option value="">Choose upazila</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="union">Union or Ward</label>
+                            <input type="text" id="union" placeholder="Name of the union or ward" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="exactLocation">Exact location</label>
+                            <input type="text" id="exactLocation" placeholder="Village, road, house number or a landmark" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="details">Anything else they should know</label>
+                            <textarea id="details" rows="3" placeholder="Tools provided, food given, start time"></textarea>
+                        </div>
+
+                        <div class="field">
+                            <label for="contact">Phone number for this job</label>
+                            <input type="tel" id="contact" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-main">Post the job</button>
+
+                    </form>
+                </div>
+
+                <div class="panel" id="mine">
+                    <h2>My job posts</h2>
+                    <p class="note">Press Close once the work is finished. Then you can rate the worker.</p>
+
+                    <div class="scroll" style="margin-top: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Job</th>
+                                    <th>Wage</th>
+                                    <th>Where</th>
+                                    <th>State</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobTable">
+                                <tr><td colspan="5" class="loading">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel" id="people">
+                    <h2>Who applied</h2>
+                    <p class="note">Call them, agree the rate, then press Hire.</p>
+
+                    <div class="scroll" style="margin-top: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Worker</th>
+                                    <th>Phone</th>
+                                    <th>For the job</th>
+                                    <th>State</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="appTable">
+                                <tr><td colspan="5" class="loading">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel" id="rate">
+                    <h2>Rate the workers</h2>
+                    <p class="note">Workers you hired on a job you have closed.</p>
+
+                    <div class="scroll" style="margin-top: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Worker</th>
+                                    <th>Job</th>
+                                    <th>Stars</th>
+                                    <th>A word about them</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="rateTable">
+                                <tr><td colspan="5" class="loading">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+    <script src="locations.js"></script>
+
+    <script>
+    var me = null;
+
+    layout("");
+
+    start();
+
+
+    async function start() {
+
+        me = requireRole(["client"]);
+
+        if (me == null) {
+            return;
+        }
+
+        setText("userName", me.name);
+        document.getElementById("contact").value = me.phone;
+
+        fillList("skill", tradeList, "Choose");
+        setupLocation("division", "district", "upazila");
+
+        document.getElementById("jobForm").addEventListener("submit", postJob);
+
+        loadMyJobs();
+        loadApplicants();
+        loadToRate();
+    }
+
+
+    async function postJob(event) {
+
+        event.preventDefault();
+
+        var result = await db.from("jobs").insert({
+            title: val("title"),
+            job_type: val("skill"),
+            wage: val("wage"),
+            workers_needed: val("workers"),
+            duration: val("duration"),
+            start_date: val("startDate"),
+            division: val("division"),
+            district: val("district"),
+            upazila: val("upazila"),
+            union_name: val("union"),
+            address: val("exactLocation"),
+            details: val("details"),
+            contact_phone: val("contact"),
+            client_id: me.id,
+            client_name: me.name
+        });
+
+        if (result.error != null) {
+            showMessage("Could not post the job. Try again.", "error");
+            return;
+        }
+
+        showMessage("Posted. An admin will check it shortly.", "success");
+
+        document.getElementById("jobForm").reset();
+        document.getElementById("contact").value = me.phone;
+
+        loadMyJobs();
+    }
+
+
+    async function loadMyJobs() {
+
+        var result = await db.from("jobs")
+            .select("id, title, wage, district, upazila, status")
+            .eq("client_id", me.id)
+            .order("created_at", { ascending: false });
+
+        var rows = result.data;
+
+        draw("jobTable", rows, myJobRow, noRows(5, "You have not posted anything yet."));
+
+        var live = 0;
+        var wait = 0;
+
+        for (var i = 0; rows != null && i < rows.length; i++) {
+            if (rows[i].status == "open") { live = live + 1; }
+            if (rows[i].status == "pending") { wait = wait + 1; }
+        }
+
+        setText("countLive", live);
+        setText("countWait", wait);
+        setText("countAll", rows == null ? 0 : rows.length);
+    }
+
+
+    function myJobRow(j) {
+
+        var action = (j.status == "open")
+            ? '<button type="button" class="btn-small warn" onclick="closeJob(\'' + j.id + '\')">Close</button>'
+            : '<span class="dim">-</span>';
+
+        return '<tr>'
+            + '<td><a href="job.html?id=' + j.id + '">' + j.title + '</a></td>'
+            + '<td>Tk ' + j.wage + '</td>'
+            + '<td>' + area(j) + '</td>'
+            + '<td><span class="stamp ' + stampFor(j.status) + '">' + j.status + '</span></td>'
+            + '<td>' + action + '</td>'
+            + '</tr>';
+    }
+
+
+    async function closeJob(id) {
+
+        await db.from("jobs").update({ status: "closed" }).eq("id", id);
+
+        showMessage("Job closed. You can rate the worker now.", "success");
+
+        loadMyJobs();
+        loadToRate();
+    }
+
+
+    async function loadApplicants() {
+
+        var result = await db.from("applications")
+            .select("id, worker_name, worker_phone, status, jobs!inner(title, client_id)")
+            .eq("jobs.client_id", me.id)
+            .order("created_at", { ascending: false });
+
+        draw("appTable", result.data, applicantRow, noRows(5, "Nobody has applied yet."));
+    }
+
+
+    function applicantRow(a) {
+
+        var action = (a.status == "pending")
+            ? '<button type="button" class="btn-small" onclick="answer(\'' + a.id + '\', \'accepted\')">Hire</button> '
+              + '<button type="button" class="btn-small warn" onclick="answer(\'' + a.id + '\', \'rejected\')">No</button>'
+            : '<span class="dim">-</span>';
+
+        return '<tr>'
+            + '<td>' + a.worker_name + '</td>'
+            + '<td>' + a.worker_phone + '</td>'
+            + '<td>' + (a.jobs ? a.jobs.title : "-") + '</td>'
+            + '<td><span class="stamp ' + stampFor(a.status) + '">' + a.status + '</span></td>'
+            + '<td>' + action + '</td>'
+            + '</tr>';
+    }
+
+
+    async function answer(id, status) {
+
+        await db.from("applications").update({ status: status }).eq("id", id);
+
+        showMessage("Worker " + status + ".", "success");
+
+        loadApplicants();
+    }
+
+
+    async function loadToRate() {
+
+        var hired = await db.from("applications")
+            .select("job_id, worker_id, worker_name, jobs!inner(title, client_id, status)")
+            .eq("status", "accepted")
+            .eq("jobs.client_id", me.id)
+            .eq("jobs.status", "closed");
+
+        var done = await db.from("ratings").select("job_id, worker_id").eq("client_id", me.id);
+
+        var alreadyRated = {};
+
+        for (var i = 0; done.data != null && i < done.data.length; i++) {
+            alreadyRated[done.data[i].job_id + "_" + done.data[i].worker_id] = true;
+        }
+
+        var waiting = [];
+
+        for (var k = 0; hired.data != null && k < hired.data.length; k++) {
+            var row = hired.data[k];
+
+            if (alreadyRated[row.job_id + "_" + row.worker_id] != true) {
+                waiting.push(row);
+            }
+        }
+
+        draw("rateTable", waiting, rateRow, noRows(5, "Nothing to rate right now."));
+    }
+
+
+    function rateRow(a) {
+
+        var key = a.job_id + "_" + a.worker_id;
+
+        return '<tr>'
+            + '<td>' + a.worker_name + '</td>'
+            + '<td>' + (a.jobs ? a.jobs.title : "-") + '</td>'
+            + '<td><select id="stars' + key + '">'
+            + '<option value="5">5</option><option value="4">4</option>'
+            + '<option value="3">3</option><option value="2">2</option>'
+            + '<option value="1">1</option></select></td>'
+            + '<td><input type="text" id="note' + key + '" placeholder="Worked well, came on time"></td>'
+            + '<td><button type="button" class="btn-small" '
+            + 'onclick="saveRating(' + a.job_id + ', ' + a.worker_id + ')">Save</button></td>'
+            + '</tr>';
+    }
+
+
+    async function saveRating(jobId, workerId) {
+
+        var key = jobId + "_" + workerId;
+
+        await db.from("ratings").insert({
+            job_id: jobId,
+            worker_id: workerId,
+            client_id: me.id,
+            client_name: me.name,
+            stars: Number(val("stars" + key)),
+            comment: val("note" + key)
+        });
+
+        showMessage("Rating saved.", "success");
+
+        loadToRate();
+    }
+
+    </script>
+
+</body>
+</html>

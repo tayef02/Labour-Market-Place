@@ -1,28 +1,94 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Labour Market Place</title>
-  </head>
-  <body>
-    <header class="bar"><nav class="container" id="nav"></nav></header>
-    <main class="container">
-      <h2>About</h2>
-      <p>
-        Labour Market Place connects skilled workers with clients who need work
-        done.
-      </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>About | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="page-top">
+            <h1>About this project</h1>
+            <p>Why it exists, who it is for, and how it was built.</p>
+        </section>
+
+        <div class="wrap narrow" style="max-width: 720px;">
+
+            <div class="panel">
+                <h2>The problem</h2>
+                <p>In most towns in Bangladesh a day labourer stands at a labour point every
+                   morning and waits for someone to come and hire him. He does not know what
+                   work is available that day, what the going rate is, or whether the person
+                   hiring him will pay what was agreed. An employer who needs four helpers at
+                   short notice has the same trouble in reverse: he must go to the labour point
+                   and hope the right trade is standing there.</p>
+
+                <p>Between the two there is usually a middle man, and he takes a cut of a wage
+                   that is already small.</p>
+            </div>
+
+            <div class="panel">
+                <h2>What this site does</h2>
+                <p>An employer posts the work and the daily wage he is offering. A worker sees
+                   the posts that match his trade and his district, applies to the ones that
+                   suit him, and the two talk by phone and agree between themselves. The site
+                   does not touch the money and takes nothing from the wage.</p>
+
+                <p>After the work is finished the employer rates the worker, so a worker who
+                   turns up on time and does clean work builds something he can show.</p>
+            </div>
+
+            <div class="panel">
+                <h2>Who uses it</h2>
+                <ul class="facts">
+                    <li><span>Worker</span> Finds work, applies, builds a rating</li>
+                    <li><span>Employer</span> Posts jobs, picks workers, rates them</li>
+                    <li><span>Super Admin</span> Everything, including making other admins</li>
+                    <li><span>Moderator Admin</span> Approves or rejects job posts, blocks users</li>
+                    <li><span>Support Admin</span> Answers complaints, can see users but not block</li>
+                </ul>
+            </div>
+
+            <div class="panel">
+                <h2>How it was built</h2>
+                <ul class="facts">
+                    <li><span>Front end</span> Plain HTML, CSS and JavaScript</li>
+                    <li><span>Database</span> Supabase (PostgreSQL)</li>
+                    <li><span>Tables</span> users, admins, jobs, applications, complaints, ratings</li>
+                    <li><span>Session</span> Browser localStorage</li>
+                    <li><span>Framework</span> None, and no build step</li>
+                </ul>
+
+                <p class="note">Written for a Computer Science and Engineering course project at
+                   Sylhet International University.</p>
+            </div>
+
+            <div class="panel">
+                <h2>What is still to come</h2>
+                <p>Passwords are stored as plain text and need to be hashed. The database access
+                   rules are open and need to be tightened per role. Phone numbers are not verified
+                   by OTP. Beyond security, the plan is SMS and WhatsApp alerts when a job is
+                   approved, a map view of where the work is, photographs on worker profiles,
+                   and a Bengali version of every page.</p>
+            </div>
+
+        </div>
     </main>
-    <footer class="container">
-      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    layout("about.html");
+    </script>
+
+</body>
 </html>

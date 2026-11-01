@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Worker | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <div class="board">
+
+            <aside class="side">
+                <div class="who">
+                    <b id="userName"></b>
+                    <span>Worker</span>
+                </div>
+
+                <ul>
+                    <li><a href="#matching">Work for you</a></li>
+                    <li><a href="#mine">My applications</a></li>
+                    <li><a href="#reviews">What employers said</a></li>
+                    <li><a href="#profile">My trade</a></li>
+                    <li><a href="jobs.html">All jobs</a></li>
+                </ul>
+            </aside>
+
+            <div>
+
+                <div id="message" class="msg"></div>
+
+                <div class="tiles">
+                    <div class="tile">
+                        <b id="countSent">0</b>
+                        <span>Applications sent</span>
+                    </div>
+                    <div class="tile">
+                        <b id="countHired">0</b>
+                        <span>Times hired</span>
+                    </div>
+                    <div class="tile">
+                        <b id="myStars">-</b>
+                        <span>My rating</span>
+                    </div>
+                </div>
+
+                <div class="panel" id="profile">
+                    <h2>My trade</h2>
+                    <p class="note">Employers find you by your trade and your daily rate.</p>
+
+                    <form id="profileForm" style="margin-top: 18px;">
+
+                        <div class="two">
+                            <div class="field">
+                                <label for="skill">My trade</label>
+                                <select id="skill" required></select>
+                            </div>
+
+                            <div class="field">
+                                <label for="rate">My daily rate (Tk)</label>
+                                <input type="number" id="rate" placeholder="900" required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="about">About my work</label>
+                            <textarea id="about" rows="3" placeholder="Years of experience, what you have built"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-main">Save</button>
+
+                    </form>
+                </div>
+
+                <div class="panel" id="matching">
+                    <h2>Work for you</h2>
+                    <p class="note" id="matchNote">Jobs that need your trade.</p>
+
+                    <div class="scroll" style="margin-top: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Job</th>
+                                    <th>Wage</th>
+                                    <th>Area</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="matchTable">
+                                <tr><td colspan="4" class="loading">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel" id="mine">
+                    <h2>My applications</h2>
+
+                    <div class="scroll" style="margin-top: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Job</th>
+                                    <th>Wage</th>
+                                    <th>Sent on</th>
+                                    <th>Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appTable">
+                                <tr><td colspan="4" class="loading">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel" id="reviews">
+                    <h2>What employers said</h2>
+
+                    <div class="scroll" style="margin-top: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employer</th>
+                                    <th>Stars</th>
+                                    <th>Their words</th>
+                                    <th>On</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviewTable">
+                                <tr><td colspan="4" class="loading">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    var me = null;
+
+    layout("");
+
+    start();
+
+
+    async function start() {
+
+        me = requireRole(["worker"]);
+
+        if (me == null) {
+            return;
+        }
+
+        setText("userName", me.name);
+
+        fillList("skill", tradeList, "Choose");
+
+        document.getElementById("profileForm").addEventListener("submit", saveProfile);
+
+        loadProfile();
+        loadMatching();
+        loadApplications();
+        loadReviews();
+    }
+
+
+    async function loadProfile() {
+
+        var result = await db.from("users")
+            .select("skill, daily_rate, about")
+            .eq("id", me.id)
+            .maybeSingle();
+
+        var u = result.data;
+
+        if (u == null) {
+            return;
+        }
+
+        document.getElementById("skill").value = u.skill || "";
+        document.getElementById("rate").value = u.daily_rate || "";
+        document.getElementById("about").value = u.about || "";
+    }
+
+
+    async function saveProfile(event) {
+
+        event.preventDefault();
+
+        await db.from("users").update({
+            skill: val("skill"),
+            daily_rate: val("rate"),
+            about: val("about")
+        }).eq("id", me.id);
+
+        me.skill = val("skill");
+        saveUser(me);
+
+        showMessage("Saved. Employers can see this now.", "success");
+
+        loadMatching();
+    }
+
+
+    async function loadMatching() {
+
+        if (me.skill == null || me.skill == "") {
+            document.getElementById("matchTable").innerHTML = noRows(4, "Pick your trade below first.");
+            return;
+        }
+
+        setText("matchNote", "Jobs that need a " + me.skill + ".");
+
+        var result = await db.from("jobs")
+            .select("id, title, wage, district, upazila")
+            .eq("status", "open")
+            .eq("job_type", me.skill)
+            .order("created_at", { ascending: false });
+
+        draw("matchTable", result.data, matchRow, noRows(4, "No open job for your trade right now."));
+    }
+
+
+    function matchRow(j) {
+
+        return '<tr>'
+            + '<td><a href="job.html?id=' + j.id + '">' + j.title + '</a></td>'
+            + '<td>Tk ' + j.wage + '</td>'
+            + '<td>' + area(j) + '</td>'
+            + '<td><button type="button" class="btn-small" onclick="apply(\'' + j.id + '\')">Apply</button></td>'
+            + '</tr>';
+    }
+
+
+    async function apply(jobId) {
+
+        var ok = await applyToJob(jobId);
+
+        if (ok) {
+            loadApplications();
+        }
+    }
+
+
+    async function loadApplications() {
+
+        var result = await db.from("applications")
+            .select("status, created_at, jobs(title, wage)")
+            .eq("worker_id", me.id)
+            .order("created_at", { ascending: false });
+
+        var rows = result.data;
+
+        draw("appTable", rows, appRow, noRows(4, "You have not applied anywhere yet."));
+
+        var hired = 0;
+
+        for (var i = 0; rows != null && i < rows.length; i++) {
+            if (rows[i].status == "accepted") { hired = hired + 1; }
+        }
+
+        setText("countSent", rows == null ? 0 : rows.length);
+        setText("countHired", hired);
+    }
+
+
+    function appRow(a) {
+
+        return '<tr>'
+            + '<td>' + (a.jobs ? a.jobs.title : "-") + '</td>'
+            + '<td>Tk ' + (a.jobs ? a.jobs.wage : "-") + '</td>'
+            + '<td>' + a.created_at.substring(0, 10) + '</td>'
+            + '<td><span class="stamp ' + stampFor(a.status) + '">' + a.status + '</span></td>'
+            + '</tr>';
+    }
+
+
+    async function loadReviews() {
+
+        var result = await db.from("ratings")
+            .select("client_name, stars, comment, created_at")
+            .eq("worker_id", me.id)
+            .order("created_at", { ascending: false });
+
+        var rows = result.data;
+
+        draw("reviewTable", rows, reviewRow, noRows(4, "No employer has rated you yet."));
+
+        if (rows == null || rows.length == 0) {
+            return;
+        }
+
+        var sum = 0;
+
+        for (var i = 0; i < rows.length; i++) {
+            sum = sum + rows[i].stars;
+        }
+
+        setText("myStars", (sum / rows.length).toFixed(1));
+    }
+
+
+    function reviewRow(r) {
+
+        return '<tr>'
+            + '<td>' + r.client_name + '</td>'
+            + '<td>' + starBar(r.stars) + '</td>'
+            + '<td>' + (r.comment || "-") + '</td>'
+            + '<td>' + r.created_at.substring(0, 10) + '</td>'
+            + '</tr>';
+    }
+
+    </script>
+
+</body>
+</html>

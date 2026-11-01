@@ -1,45 +1,144 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Labour Market Place</title>
-  </head>
-  <body>
-    <header class="bar"><nav class="container" id="nav"></nav></header>
-    <main class="container">
-      <section class="hero">
-        <h1>Find the Right Worker for Your Job</h1>
-        <p>Connect with skilled workers and find suitable jobs easily.</p>
-        <a href="workers.html" role="button" class="secondary">Find Workers</a>
-        <a href="jobs.html" role="button" class="outline contrast"
-          >Browse Jobs</a
-        >
-      </section>
-      <section class="grid">
-        <article class="card">
-          <h4>1. Register</h4>
-          <p>Join as a worker or a client in one minute.</p>
-        </article>
-        <article class="card">
-          <h4>2. Post or Set Up Profile</h4>
-          <p>Clients post jobs. Workers add skill, rate and availability.</p>
-        </article>
-        <article class="card">
-          <h4>3. Connect</h4>
-          <p>Call directly and agree on the work.</p>
-        </article>
-      </section>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Home | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+
+                <div>
+                    <span class="eyebrow">Day labour &middot; Bangladesh</span>
+                    <h1>Work today, at a rate you both agreed.</h1>
+                    <p>Employers post the job and the daily wage. Workers see it, apply, and
+                       talk directly. No middle man taking a cut from the wage.</p>
+
+                    <div class="hero-buttons">
+                        <a href="jobs.html" class="btn btn-main">See today's work</a>
+                        <a href="find-workers.html" class="btn btn-line">Find a worker</a>
+                    </div>
+                </div>
+
+                <div class="sheet">
+                    <div class="sheet-top">
+                        <b>Posted recently</b>
+                        <span id="boardCount"></span>
+                    </div>
+
+                    <div id="board">
+                        <p class="row"><span>Loading...</span></p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="wrap">
+
+            <div class="tiles">
+                <div class="tile">
+                    <b id="countWorkers">0</b>
+                    <span>Workers registered</span>
+                </div>
+                <div class="tile">
+                    <b id="countClients">0</b>
+                    <span>Employers</span>
+                </div>
+                <div class="tile">
+                    <b id="countOpen">0</b>
+                    <span>Jobs open now</span>
+                </div>
+                <div class="tile">
+                    <b id="countDone">0</b>
+                    <span>Jobs finished</span>
+                </div>
+            </div>
+
+            <h2 class="title">How it works</h2>
+
+            <div class="steps">
+                <div class="step">
+                    <h3>Make an account</h3>
+                    <p>Sign up as a worker looking for work, or as an employer who needs hands.</p>
+                </div>
+                <div class="step">
+                    <h3>Post or apply</h3>
+                    <p>An employer posts the job and the wage. Workers apply to the ones that fit.</p>
+                </div>
+                <div class="step">
+                    <h3>Agree and start</h3>
+                    <p>The employer picks a worker, they talk by phone, and the work begins.</p>
+                </div>
+                <div class="step">
+                    <h3>Rate each other</h3>
+                    <p>When the job is closed the employer rates the worker, so good hands stand out.</p>
+                </div>
+            </div>
+
+        </div>
     </main>
-    <footer class="container">
-      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    layout("index.html");
+
+    loadNumbers();
+    loadBoard();
+
+
+    async function loadNumbers() {
+
+        var open = await countRows("jobs", "status", "open");
+
+        setText("countWorkers", await countRows("users", "role", "worker"));
+        setText("countClients", await countRows("users", "role", "client"));
+        setText("countOpen", open);
+        setText("countDone", await countRows("jobs", "status", "closed"));
+        setText("boardCount", open + " open");
+    }
+
+
+    async function loadBoard() {
+
+        var result = await db.from("jobs")
+            .select("*")
+            .eq("status", "open")
+            .order("created_at", { ascending: false })
+            .limit(4);
+
+        if (result.error != null) {
+            document.getElementById("board").innerHTML =
+                '<div class="row"><span>Could not load the list.</span></div>';
+            return;
+        }
+
+        draw("board", result.data, boardRow,
+            '<div class="row"><span>No open work right now.</span></div>');
+    }
+
+
+    function boardRow(j) {
+
+        return '<div class="row">'
+            + '<div><b>' + j.job_type + '</b><span>' + area(j) + '</span></div>'
+            + '<div class="rate">Tk ' + j.wage + '</div>'
+            + '</div>';
+    }
+
+    </script>
+
+</body>
 </html>

@@ -1,25 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Labour Market Place</title>
-  </head>
-  <body>
-    <header class="bar"><nav class="container" id="nav"></nav></header>
-    <main class="container">
-      <h2>Blog</h2>
-      <p>Coming soon.</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Blog | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="page-top">
+            <h1>Blog</h1>
+            <p>Short notes for workers and employers. Written by hand, not from the database.</p>
+        </section>
+
+        <div class="wrap narrow" style="max-width: 720px;">
+
+            <div class="panel">
+                <p class="trade">For workers</p>
+                <h2>Agree the wage before you start, not after</h2>
+                <p class="note">3 minutes to read</p>
+
+                <p>The commonest complaint on this site is a wage that shrank by the end of the
+                   day. Almost every one of them starts the same way: the work began before
+                   anyone said a number out loud.</p>
+
+                <p>Before you pick up a tool, say the figure back to the person hiring you and
+                   get a yes. Ask how many days the work will run and what happens if it rains.
+                   If food or tools were promised, say that out loud too. The job post on this
+                   site already carries the wage the employer offered, so open it on your phone
+                   and point at it.</p>
+            </div>
+
+            <div class="panel">
+                <p class="trade">For employers</p>
+                <h2>A good job post gets you better hands</h2>
+                <p class="note">2 minutes to read</p>
+
+                <p>Posts that say only "need a mason" sit unanswered. Posts that say the trade,
+                   the daily wage, how many people, how many days, and exactly where the site is
+                   get answered within hours.</p>
+
+                <p>Be honest about the hard parts of the work. A worker who turns up and finds
+                   the job heavier than he was told will leave, and you will have lost a day.
+                   Write the landmark nearest the site, not just the union name, so people can
+                   find you without ringing you five times.</p>
+            </div>
+
+            <div class="panel">
+                <p class="trade">How this works</p>
+                <h2>What your rating means</h2>
+                <p class="note">2 minutes to read</p>
+
+                <p>When an employer closes a job, he can give every worker he hired a rating out
+                   of five and write a line about them. That rating shows on your card on the
+                   Find Workers page, so an employer looking for a mason in your district sees it
+                   before he calls you.</p>
+
+                <p>Nobody can rate you unless they actually hired you on a job that has been
+                   closed, and each employer can rate you once per job. Turn up on time, finish
+                   what you started, and the rating takes care of itself.</p>
+            </div>
+
+            <p class="under">More posts will be added here.</p>
+
+        </div>
     </main>
-    <footer class="container">
-      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    layout("blog.html");
+    </script>
+
+</body>
 </html>

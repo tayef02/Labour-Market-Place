@@ -1,51 +1,110 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Labour Market Place</title>
-  </head>
-  <body data-auth>
-    <header class="bar"><nav class="container" id="nav"></nav></header>
-    <main class="container">
-      <h2>Jobs</h2>
-      <article id="post" hidden>
-        <h4>Post a job</h4>
-        <form id="jobform">
-          <input name="title" placeholder="Job title" required /><textarea
-            name="description"
-            placeholder="Work details"
-          ></textarea>
-          <div class="grid">
-            <select name="district" required>
-              <option value="">District</option></select
-            ><input
-              name="wage"
-              type="number"
-              min="0"
-              placeholder="Budget per day (৳)"
-            /><input
-              name="hours"
-              type="number"
-              min="1"
-              max="24"
-              placeholder="Hours per day"
-            />
-          </div>
-          <button>Post Job</button><small id="msg"></small>
-        </form>
-      </article>
-      <div id="list" class="grid-list" aria-busy="true"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Jobs | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="page-top">
+            <h1>Open work</h1>
+            <p>Every job here was checked by an admin before it went up.</p>
+        </section>
+
+        <div class="wrap">
+
+            <div class="panel">
+                <div class="two">
+                    <div class="field">
+                        <label for="district">District</label>
+                        <select id="district"></select>
+                    </div>
+
+                    <div class="field">
+                        <label for="skill">Trade</label>
+                        <select id="skill"></select>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-main" onclick="loadJobs()">Search</button>
+            </div>
+
+            <div id="message" class="msg"></div>
+
+            <p class="dim" id="count"></p>
+
+            <div class="cards" id="list">
+                <p class="loading">Loading...</p>
+            </div>
+
+        </div>
     </main>
-    <footer class="container">
-      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    layout("jobs.html");
+
+    fillList("district", districtList, "All districts");
+    fillList("skill", tradeList, "All trades");
+
+    loadJobs();
+
+
+    async function loadJobs() {
+
+        document.getElementById("list").innerHTML = '<p class="loading">Loading...</p>';
+
+        var query = db.from("jobs").select("*").eq("status", "open");
+
+        if (val("district") != "") {
+            query = query.eq("district", val("district"));
+        }
+
+        if (val("skill") != "") {
+            query = query.eq("job_type", val("skill"));
+        }
+
+        var result = await query.order("created_at", { ascending: false });
+        var rows = result.data;
+
+        setText("count", (rows == null || rows.length == 0)
+            ? "Nothing found. Try a wider search."
+            : rows.length + " jobs open");
+
+        draw("list", rows, jobCard, "");
+    }
+
+
+    function jobCard(j) {
+
+        return '<div class="card">'
+            + '<div class="card-head">'
+            + '<h3><a href="job.html?id=' + j.id + '">' + j.title + '</a></h3>'
+            + '<div class="wage">Tk ' + j.wage + '<small>per day</small></div>'
+            + '</div>'
+            + '<p class="trade">' + j.job_type + '</p>'
+            + '<ul class="facts">'
+            + '<li><span>Area</span> ' + area(j) + '</li>'
+            + '<li><span>Starts</span> ' + (j.start_date || "-") + '</li>'
+            + '<li><span>Hands needed</span> ' + (j.workers_needed || 1) + '</li>'
+            + '<li><span>Posted by</span> ' + (j.client_name || "-") + '</li>'
+            + '</ul>'
+            + '<a href="job.html?id=' + j.id + '" class="btn btn-soft btn-wide">See the details</a>'
+            + '</div>';
+    }
+
+    </script>
+
+</body>
 </html>

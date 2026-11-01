@@ -1,43 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Labour Market Place</title>
-  </head>
-  <body>
-    <header class="bar"><nav class="container" id="nav"></nav></header>
-    <main class="container">
-      <article class="box">
-        <h2>Login</h2>
-        <p>Welcome back. Log in to your account.</p>
-        <form id="login">
-          <label
-            >Phone Number<input
-              name="phone"
-              type="tel"
-              placeholder="01XXXXXXXXX"
-              required /></label
-          ><label
-            >Password<input
-              name="password"
-              type="password"
-              placeholder="Your password"
-              required /></label
-          ><button>Login</button><small id="msg"></small>
-        </form>
-        <p>No account? <a href="register.html">Register</a></p>
-      </article>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Log in | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="signin">
+        <div class="narrow">
+
+            <div class="panel">
+                <h2>Log in</h2>
+
+                <div class="tabs">
+                    <button type="button" class="tab on" id="tabUser" onclick="pickTab('user')">Worker / Employer</button>
+                    <button type="button" class="tab" id="tabAdmin" onclick="pickTab('admin')">Admin</button>
+                </div>
+
+                <p class="note" id="tabNote">Workers and employers log in here.</p>
+
+                <div id="message" class="msg"></div>
+
+                <form id="loginForm" style="margin-top: 18px;">
+
+                    <div class="field">
+                        <label for="phone">Phone number</label>
+                        <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Your password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-main btn-wide">Log in</button>
+
+                </form>
+            </div>
+
+            <p class="under">New here? <a href="register.html">Make an account</a></p>
+
+        </div>
+        </section>
     </main>
-    <footer class="container">
-      <small>&copy; 2026 Labour Market Place. All rights reserved.</small>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    var loginAs = "user";
+
+    layout("login.html");
+
+    document.getElementById("loginForm").addEventListener("submit", tryLogin);
+
+
+    function pickTab(kind) {
+
+        loginAs = kind;
+
+        document.getElementById("tabUser").className = (kind == "user") ? "tab on" : "tab";
+        document.getElementById("tabAdmin").className = (kind == "admin") ? "tab on" : "tab";
+
+        setText("tabNote", (kind == "admin")
+            ? "Admin accounts are made inside the admin panel, not here."
+            : "Workers and employers log in here.");
+    }
+
+
+    async function tryLogin(event) {
+
+        event.preventDefault();
+
+        var table = (loginAs == "admin") ? "admins" : "users";
+
+        var result = await db.from(table)
+            .select("*")
+            .eq("phone", val("phone"))
+            .maybeSingle();
+
+        var row = result.data;
+
+        if (row == null || row.password != document.getElementById("password").value) {
+            showMessage("Phone number or password is wrong.", "error");
+            return;
+        }
+
+        if (row.is_active == false) {
+            showMessage("This account is turned off. Contact support.", "error");
+            return;
+        }
+
+        var role = (loginAs == "admin") ? "admin" : row.role;
+
+        saveUser({
+            id: row.id,
+            name: row.name,
+            phone: row.phone,
+            role: role,
+            level: row.admin_level || null,
+            skill: row.skill || null
+        });
+
+        window.location.href = homePage[role];
+    }
+
+    </script>
+
+</body>
 </html>

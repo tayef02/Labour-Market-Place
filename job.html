@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Job | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="page-top">
+            <h1 id="jobTitle">Job</h1>
+            <p id="jobTrade"></p>
+        </section>
+
+        <div class="wrap narrow" style="max-width: 620px;">
+
+            <div id="message" class="msg"></div>
+
+            <div class="panel" id="sheet">
+                <p class="loading">Loading...</p>
+            </div>
+
+            <p class="under"><a href="jobs.html">Back to all jobs</a></p>
+
+        </div>
+    </main>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    var jobId = idFromUrl();
+
+    layout("jobs.html");
+
+    loadJob();
+
+
+    async function loadJob() {
+
+        var result = await db.from("jobs").select("*").eq("id", jobId).maybeSingle();
+        var j = result.data;
+
+        if (j == null) {
+            document.getElementById("sheet").innerHTML = '<p class="empty">This job was not found.</p>';
+            return;
+        }
+
+        setText("jobTitle", j.title);
+        setText("jobTrade", j.job_type + " needed");
+        document.title = j.title + " | Labour Market Place";
+
+        document.getElementById("sheet").innerHTML =
+              '<div class="card-head">'
+            + '<h3>' + j.job_type + '</h3>'
+            + '<div class="wage">Tk ' + j.wage + '<small>per day</small></div>'
+            + '</div>'
+            + '<ul class="facts">'
+            + '<li><span>State</span> <span class="stamp ' + stampFor(j.status) + '">' + j.status + '</span></li>'
+            + '<li><span>Hands needed</span> ' + (j.workers_needed || 1) + '</li>'
+            + '<li><span>How long</span> ' + (j.duration || "-") + '</li>'
+            + '<li><span>Starts</span> ' + (j.start_date || "-") + '</li>'
+            + '<li><span>Division</span> ' + (j.division || "-") + '</li>'
+            + '<li><span>Area</span> ' + area(j) + '</li>'
+            + '<li><span>Union or ward</span> ' + (j.union_name || "-") + '</li>'
+            + '<li><span>Exact spot</span> ' + (j.address || "-") + '</li>'
+            + '<li><span>Posted by</span> ' + (j.client_name || "-") + '</li>'
+            + '<li><span>Phone</span> ' + (j.contact_phone || "-") + '</li>'
+            + '</ul>'
+            + '<p class="dim">' + (j.details || "") + '</p>'
+            + (j.status == "open"
+                ? '<button type="button" class="btn btn-main btn-wide" onclick="applyToJob(\'' + j.id + '\')">Apply for this job</button>'
+                : '<p class="note">This job is not open, so you cannot apply.</p>');
+    }
+
+    </script>
+
+</body>
+</html>

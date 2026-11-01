@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Wage Rates | Labour Market Place</title>
+</head>
+
+<body>
+
+    <header class="topbar" id="nav"></header>
+
+    <main>
+        <section class="page-top">
+            <h1>Wage rates</h1>
+            <p>What employers are really paying, worked out from the jobs posted on this site.</p>
+        </section>
+
+        <div class="wrap">
+
+            <div class="panel">
+                <div class="field">
+                    <label for="district">District</label>
+                    <select id="district"></select>
+                </div>
+
+                <button type="button" class="btn btn-main" onclick="loadRates()">Show rates</button>
+            </div>
+
+            <p class="dim" id="count"></p>
+
+            <div class="panel">
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Trade</th>
+                                <th>Jobs posted</th>
+                                <th>Lowest</th>
+                                <th>Average</th>
+                                <th>Highest</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rateTable">
+                            <tr><td colspan="5" class="loading">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="note">A daily wage, in taka. Treat it as a guide, not a fixed price.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="foot"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+
+    <script>
+    layout("wage-rates.html");
+
+    fillList("district", districtList, "All districts");
+
+    loadRates();
+
+
+    async function loadRates() {
+
+        var query = db.from("jobs").select("job_type, wage");
+
+        if (val("district") != "") {
+            query = query.eq("district", val("district"));
+        }
+
+        var result = await query;
+        var rows = result.data;
+
+        if (rows == null || rows.length == 0) {
+            document.getElementById("rateTable").innerHTML = noRows(5, "No job posted here yet.");
+            setText("count", "");
+            return;
+        }
+
+        setText("count", "Worked out from " + rows.length + " job posts.");
+
+        draw("rateTable", groupByTrade(rows), rateRow, noRows(5, "No job posted here yet."));
+    }
+
+
+    function groupByTrade(rows) {
+
+        var box = {};
+
+        for (var i = 0; i < rows.length; i++) {
+
+            var trade = rows[i].job_type;
+            var wage = Number(rows[i].wage);
+
+            if (box[trade] == null) {
+                box[trade] = { trade: trade, count: 0, sum: 0, low: wage, high: wage };
+            }
+
+            box[trade].count = box[trade].count + 1;
+            box[trade].sum = box[trade].sum + wage;
+
+            if (wage < box[trade].low) { box[trade].low = wage; }
+            if (wage > box[trade].high) { box[trade].high = wage; }
+        }
+
+        var list = [];
+
+        for (var key in box) {
+            box[key].average = Math.round(box[key].sum / box[key].count);
+            list.push(box[key]);
+        }
+
+        list.sort(function (a, b) { return b.average - a.average; });
+
+        return list;
+    }
+
+
+    function rateRow(r) {
+
+        return '<tr>'
+            + '<td>' + r.trade + '</td>'
+            + '<td>' + r.count + '</td>'
+            + '<td>Tk ' + r.low + '</td>'
+            + '<td><b>Tk ' + r.average + '</b></td>'
+            + '<td>Tk ' + r.high + '</td>'
+            + '</tr>';
+    }
+
+    </script>
+
+</body>
+</html>
