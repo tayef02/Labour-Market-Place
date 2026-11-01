@@ -422,7 +422,7 @@
 
         var key = jobId + "_" + workerId;
 
-        await db.from("ratings").insert({
+        var result = await db.from("ratings").insert({
             job_id: jobId,
             worker_id: workerId,
             client_id: me.id,
@@ -430,6 +430,11 @@
             stars: Number(val("stars" + key)),
             comment: val("note" + key)
         });
+
+        if (result.error != null) {
+            showMessage("Could not save: " + result.error.message, "error");
+            return;
+        }
 
         showMessage("Rating saved.", "success");
 

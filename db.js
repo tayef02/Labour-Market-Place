@@ -125,6 +125,7 @@ function showMessage(text, type) {
     box.textContent = text;
     box.className = "msg " + type;
     box.style.display = "block";
+    box.scrollIntoView({ block: "center" });
 }
 
 
