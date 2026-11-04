@@ -15,9 +15,9 @@
 
 body {
     margin: 0;
-    font-family: Archivo, Arial, sans-serif;
+    font-family: Archivo, "Noto Sans Bengali", Arial, sans-serif;
     font-size: 15px;
-    line-height: 1.55;
+    line-height: 1.7;
     color: var(--ink);
     background: var(--paper);
 
@@ -132,6 +132,12 @@ a {
 
 .btn-line:hover {
     border-color: var(--hi);
+}
+
+.btn-lang {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 5px;
 }
 
 .btn-soft {

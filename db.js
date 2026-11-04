@@ -10,6 +10,14 @@ var homePage = {
 };
 
 
+var autoApprove = true;
+
+
+function newJobStatus() {
+    return autoApprove ? "open" : "pending";
+}
+
+
 var tradeList = [
     "Mason", "Helper", "Electrician", "Plumber", "Carpenter",
     "Painter", "Cleaner", "Cook", "Loader", "Driver"
@@ -103,10 +111,12 @@ function layout(here) {
             + '<li><button type="button" class="btn btn-line" onclick="logout()">Log out</button></li>';
     }
 
-    document.getElementById("nav").innerHTML = html + '</ul>';
+    document.getElementById("nav").innerHTML = html + langButton() + '</ul>';
 
     document.getElementById("foot").innerHTML =
         "<p>Labour Market Place &mdash; a fair day's work at a fair day's rate.</p>";
+
+    applyLanguage();
 }
 
 
@@ -116,13 +126,13 @@ function val(id) {
 
 
 function setText(id, text) {
-    document.getElementById(id).textContent = text;
+    document.getElementById(id).textContent = t(text);
 }
 
 
 function showMessage(text, type) {
     var box = document.getElementById("message");
-    box.textContent = text;
+    box.textContent = t(text);
     box.className = "msg " + type;
     box.style.display = "block";
     box.scrollIntoView({ block: "center" });
@@ -135,6 +145,7 @@ function draw(boxId, rows, makeRow, emptyText) {
 
     if (rows == null || rows.length == 0) {
         box.innerHTML = emptyText;
+        applyLanguage();
         return;
     }
 
@@ -145,6 +156,8 @@ function draw(boxId, rows, makeRow, emptyText) {
     }
 
     box.innerHTML = html;
+
+    applyLanguage();
 }
 
 
@@ -164,10 +177,12 @@ function fillList(boxId, list, firstLine) {
     var html = '<option value="">' + firstLine + '</option>';
 
     for (var i = 0; i < list.length; i++) {
-        html = html + '<option>' + list[i] + '</option>';
+        html = html + '<option value="' + list[i] + '">' + list[i] + '</option>';
     }
 
     document.getElementById(boxId).innerHTML = html;
+
+    applyLanguage();
 }
 
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Home | Labour Market Place</title>
 </head>
@@ -90,6 +90,7 @@
     <footer id="foot"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="lang.js"></script>
     <script src="db.js"></script>
 
     <script>
@@ -107,7 +108,7 @@
         setText("countClients", await countRows("users", "role", "client"));
         setText("countOpen", open);
         setText("countDone", await countRows("jobs", "status", "closed"));
-        setText("boardCount", open + " open");
+        setText("boardCount", open + " " + t("open"));
     }
 
 

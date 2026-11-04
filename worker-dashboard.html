@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Worker | Labour Market Place</title>
 </head>
@@ -146,6 +146,7 @@
     <footer id="foot"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="lang.js"></script>
     <script src="db.js"></script>
 
     <script>
@@ -222,7 +223,7 @@
             return;
         }
 
-        setText("matchNote", "Jobs that need a " + me.skill + ".");
+        setText("matchNote", "Jobs that need your trade.");
 
         var result = await db.from("jobs")
             .select("id, title, wage, district, upazila")

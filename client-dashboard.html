@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Employer | Labour Market Place</title>
 </head>
@@ -51,7 +51,7 @@
 
                 <div class="panel" id="post">
                     <h2>Post a job</h2>
-                    <p class="note">An admin checks it first. After that every worker can see it.</p>
+                    <p class="note" id="postNote"></p>
 
                     <form id="jobForm" style="margin-top: 18px;">
 
@@ -211,6 +211,7 @@
     <footer id="foot"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="lang.js"></script>
     <script src="db.js"></script>
     <script src="locations.js"></script>
 
@@ -232,6 +233,10 @@
 
         setText("userName", me.name);
         document.getElementById("contact").value = me.phone;
+
+        setText("postNote", autoApprove
+            ? "The job goes live right away."
+            : "An admin checks it first. After that every worker can see it.");
 
         fillList("skill", tradeList, "Choose");
         setupLocation("division", "district", "upazila");
@@ -262,6 +267,7 @@
             address: val("exactLocation"),
             details: val("details"),
             contact_phone: val("contact"),
+            status: newJobStatus(),
             client_id: me.id,
             client_name: me.name
         });
@@ -271,7 +277,9 @@
             return;
         }
 
-        showMessage("Posted. An admin will check it shortly.", "success");
+        showMessage(autoApprove
+            ? "Posted. It is live on the Jobs page now."
+            : "Posted. An admin will check it shortly.", "success");
 
         document.getElementById("jobForm").reset();
         document.getElementById("contact").value = me.phone;
@@ -364,7 +372,7 @@
 
         await db.from("applications").update({ status: status }).eq("id", id);
 
-        showMessage("Worker " + status + ".", "success");
+        showMessage(status == "accepted" ? "Worker hired." : "Worker turned down.", "success");
 
         loadApplicants();
     }
