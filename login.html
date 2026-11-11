@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Log in | Labour Market Place</title>
 </head>
@@ -55,15 +55,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="lang.js"></script>
+    <script src="icons.js"></script>
     <script src="db.js"></script>
 
-    <script>
-    var loginAs = "user";
+    <script>    var loginAs = "user";
 
     layout("login.html");
 
     document.getElementById("loginForm").addEventListener("submit", tryLogin);
-
 
     function pickTab(kind) {
 
@@ -76,7 +75,6 @@
             ? "Admin accounts are made inside the admin panel, not here."
             : "Workers and employers log in here.");
     }
-
 
     async function tryLogin(event) {
 
@@ -114,8 +112,7 @@
 
         window.location.href = homePage[role];
     }
-
-    </script>
+</script>
 
 </body>
 </html>
