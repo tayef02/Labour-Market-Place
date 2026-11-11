@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Admin | Labour Market Place</title>
 </head>
@@ -13,9 +13,11 @@
     <header class="topbar" id="nav"></header>
 
     <main>
-        <div class="board">
+        <div class="board console">
 
             <aside class="side">
+                <p class="console-tag">Control room</p>
+
                 <div class="who">
                     <b id="userName"></b>
                     <span id="userLevel"></span>
@@ -184,15 +186,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="lang.js"></script>
+    <script src="icons.js"></script>
     <script src="db.js"></script>
 
-    <script>
-    var me = null;
+    <script>    var me = null;
 
     layout("");
 
     start();
-
 
     async function start() {
 
@@ -224,7 +225,6 @@
         }
     }
 
-
     function hideBoxes(level) {
 
         var boxes = document.querySelectorAll("[data-level]");
@@ -242,14 +242,12 @@
         }
     }
 
-
     async function loadNumbers() {
         setText("countWorkers", await countRows("users", "role", "worker"));
         setText("countClients", await countRows("users", "role", "client"));
         setText("countWaiting", await countRows("jobs", "status", "pending"));
         setText("countHelp", await countRows("complaints", "status", "pending"));
     }
-
 
     async function loadJobs() {
 
@@ -261,20 +259,18 @@
         draw("jobTable", result.data, jobRow, noRows(5, "Nothing is waiting."));
     }
 
-
     function jobRow(j) {
 
         return '<tr>'
             + '<td>' + j.title + '</td>'
             + '<td>' + j.job_type + '</td>'
-            + '<td>Tk ' + j.wage + '</td>'
+            + '<td>' + money(j.wage) + '</td>'
             + '<td>' + (j.client_name || "-") + '</td>'
             + '<td>'
             + '<button type="button" class="btn-small" onclick="setJob(\'' + j.id + '\', \'open\')">Approve</button> '
             + '<button type="button" class="btn-small warn" onclick="setJob(\'' + j.id + '\', \'rejected\')">Reject</button>'
             + '</td></tr>';
     }
-
 
     async function setJob(id, status) {
 
@@ -286,7 +282,6 @@
         loadNumbers();
     }
 
-
     async function loadComplaints() {
 
         var result = await db.from("complaints")
@@ -295,7 +290,6 @@
 
         draw("helpTable", result.data, helpRow, noRows(4, "No complaints."));
     }
-
 
     function helpRow(c) {
 
@@ -311,7 +305,6 @@
             + '<td>' + box + '</td>'
             + '</tr>';
     }
-
 
     async function replyTo(id) {
 
@@ -330,7 +323,6 @@
         loadNumbers();
     }
 
-
     async function loadUsers() {
 
         var result = await db.from("users")
@@ -339,7 +331,6 @@
 
         draw("userTable", result.data, userRow, noRows(6, "No users yet."));
     }
-
 
     function userRow(u) {
 
@@ -360,7 +351,6 @@
             + '</tr>';
     }
 
-
     async function toggleUser(id, isActive) {
 
         await db.from("users").update({ is_active: !isActive }).eq("id", id);
@@ -369,7 +359,6 @@
 
         loadUsers();
     }
-
 
     async function addAdmin(event) {
 
@@ -408,7 +397,6 @@
         loadAdmins();
     }
 
-
     async function loadAdmins() {
 
         var result = await db.from("admins")
@@ -417,7 +405,6 @@
 
         draw("adminTable", result.data, adminRow, noRows(5, "No admins found."));
     }
-
 
     function adminRow(a) {
 
@@ -437,7 +424,6 @@
             + '</tr>';
     }
 
-
     async function toggleAdmin(id, isActive) {
 
         await db.from("admins").update({ is_active: !isActive }).eq("id", id);
@@ -446,8 +432,7 @@
 
         loadAdmins();
     }
-
-    </script>
+</script>
 
 </body>
 </html>
