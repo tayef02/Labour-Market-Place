@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Register | Labour Market Place</title>
 </head>
@@ -16,6 +16,50 @@
     <main>
         <section class="signin">
         <div class="narrow" style="max-width: 520px;">
+
+            <div class="helper">
+                <div class="helper-row">
+                    <span class="round-hi" id="helperIcon"></span>
+                    <div class="helper-tx">
+                        <h2>Cannot read or write?</h2>
+                        <p>There is a small microphone beside every box. Press it and I
+                           will ask out loud, you answer, and I write it down for you.</p>
+                    </div>
+                </div>
+
+                <div class="helper-buttons">
+                    <button type="button" class="btn btn-main" onclick="askEveryField()">Ask me everything</button>
+                    <button type="button" class="btn btn-line" onclick="stopVoice()">Stop</button>
+                    <button type="button" class="btn btn-soft" onclick="testHooks()">Test the n8n link</button>
+                </div>
+
+                <div class="vstat" id="hookTest"></div>
+            </div>
+
+            <div class="panel nid-panel">
+                <h2>Or show your NID card</h2>
+                <p class="note">Take a photo of both sides. The name and address are
+                   copied into the form for you.</p>
+
+                <div class="shots">
+                    <label class="shot" id="shotfront">
+                        <input type="file" accept="image/*" capture="environment"
+                               onchange="pickNid('front', this)">
+                        <span>Front side</span>
+                    </label>
+
+                    <label class="shot" id="shotback">
+                        <input type="file" accept="image/*" capture="environment"
+                               onchange="pickNid('back', this)">
+                        <span>Back side</span>
+                    </label>
+                </div>
+
+                <div class="vstat" id="nidMsg"></div>
+
+                <button type="button" class="btn btn-main btn-wide" style="margin-top:14px"
+                        onclick="readNid()">Read the card</button>
+            </div>
 
             <div class="panel">
                 <h2>Make an account</h2>
@@ -38,6 +82,11 @@
                     <div class="field">
                         <label for="name">Full name</label>
                         <input type="text" id="name" placeholder="Your full name" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="nid">NID number</label>
+                        <input type="text" id="nid" placeholder="Not required, or read from the card">
                     </div>
 
                     <div class="two">
@@ -117,16 +166,25 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="lang.js"></script>
+    <script src="icons.js"></script>
     <script src="db.js"></script>
+    <script src="voice.js"></script>
+    <script src="nid.js"></script>
     <script src="locations.js"></script>
 
-    <script>
-    layout("register.html");
+    <script>    layout("register.html");
 
     setupLocation("division", "district", "upazila");
 
-    document.getElementById("registerForm").addEventListener("submit", register);
+    document.getElementById("helperIcon").innerHTML = icon("mic", 30, "#ffffff");
 
+    addFieldMics();
+
+    if (new URLSearchParams(window.location.search).get("voice") == "1") {
+        askEveryField();
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", register);
 
     async function register(event) {
 
@@ -163,6 +221,7 @@
 
         var result = await db.from("users").insert({
             name: val("name"),
+            nid: val("nid"),
             phone: phone,
             email: val("email"),
             password: password,
@@ -185,8 +244,7 @@
             window.location.href = "login.html";
         }, 1400);
     }
-
-    </script>
+</script>
 
 </body>
 </html>
