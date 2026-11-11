@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Employer | Labour Market Place</title>
 </head>
@@ -13,196 +13,155 @@
     <header class="topbar" id="nav"></header>
 
     <main>
-        <div class="board">
 
-            <aside class="side">
+        <section class="profile-bar">
+            <div class="profile-inner">
+
+                <div class="face" id="face"></div>
+
                 <div class="who">
                     <b id="userName"></b>
                     <span>Employer</span>
                 </div>
 
-                <ul>
-                    <li><a href="#post">Post a job</a></li>
-                    <li><a href="#mine">My job posts</a></li>
-                    <li><a href="#people">Who applied</a></li>
-                    <li><a href="#rate">Rate the workers</a></li>
-                    <li><a href="find-workers.html">Find workers</a></li>
-                </ul>
-            </aside>
-
-            <div>
-
-                <div id="message" class="msg"></div>
-
-                <div class="tiles">
-                    <div class="tile">
-                        <b id="countLive">0</b>
+                <div class="who-stats">
+                    <div>
+                        <b class="hot" id="countLive">0</b>
                         <span>Live now</span>
                     </div>
-                    <div class="tile">
+                    <div>
                         <b id="countWait">0</b>
                         <span>Waiting for admin</span>
                     </div>
-                    <div class="tile">
+                    <div>
                         <b id="countAll">0</b>
                         <span>Posted in total</span>
                     </div>
                 </div>
 
-                <div class="panel" id="post">
-                    <h2>Post a job</h2>
-                    <p class="note" id="postNote"></p>
+                <a href="#post" class="btn btn-main">Post a job</a>
 
-                    <form id="jobForm" style="margin-top: 18px;">
+            </div>
+        </section>
+
+        <div class="wrap" style="max-width: 1240px;">
+
+            <div id="message" class="msg"></div>
+
+            <p class="note" style="margin-bottom:14px">A job moves from left to right: you post it,
+               people apply, you hire, and when the work is done you rate them.</p>
+
+            <div class="pipe">
+
+                <div class="lane">
+                    <div class="lane-top"><b>My job posts</b><span id="n1">0</span></div>
+                    <div class="lane-body" id="jobLane"><p class="loading">Loading...</p></div>
+                </div>
+
+                <div class="lane">
+                    <div class="lane-top"><b>Who applied</b><span id="n2">0</span></div>
+                    <div class="lane-body" id="appLane"><p class="loading">Loading...</p></div>
+                </div>
+
+                <div class="lane">
+                    <div class="lane-top"><b>Hired</b><span id="n3">0</span></div>
+                    <div class="lane-body" id="hiredLane"><p class="loading">Loading...</p></div>
+                </div>
+
+                <div class="lane">
+                    <div class="lane-top"><b>Rate the workers</b><span id="n4">0</span></div>
+                    <div class="lane-body" id="rateLane"><p class="loading">Loading...</p></div>
+                </div>
+
+            </div>
+
+            <h2 class="title" style="margin-top:40px" id="post">Post a job</h2>
+
+            <div class="panel">
+                <p class="note" id="postNote"></p>
+
+                <form id="jobForm" style="margin-top: 18px;">
+
+                    <div class="field">
+                        <label for="title">What is the work</label>
+                        <input type="text" id="title" placeholder="Two masons for a boundary wall" required>
+                    </div>
+
+                    <div class="two">
+                        <div class="field">
+                            <label for="skill">Trade needed</label>
+                            <select id="skill" required></select>
+                        </div>
 
                         <div class="field">
-                            <label for="title">What is the work</label>
-                            <input type="text" id="title" placeholder="Two masons for a boundary wall" required>
+                            <label for="wage">Daily wage (Tk)</label>
+                            <input type="number" id="wage" placeholder="950" required>
                         </div>
+                    </div>
 
-                        <div class="two">
-                            <div class="field">
-                                <label for="skill">Trade needed</label>
-                                <select id="skill" required></select>
-                            </div>
-
-                            <div class="field">
-                                <label for="wage">Daily wage (Tk)</label>
-                                <input type="number" id="wage" placeholder="950" required>
-                            </div>
-                        </div>
-
-                        <div class="two">
-                            <div class="field">
-                                <label for="workers">How many hands</label>
-                                <input type="number" id="workers" min="1" placeholder="2" required>
-                            </div>
-
-                            <div class="field">
-                                <label for="duration">How long</label>
-                                <input type="text" id="duration" placeholder="6 days" required>
-                            </div>
+                    <div class="two">
+                        <div class="field">
+                            <label for="workers">How many hands</label>
+                            <input type="number" id="workers" min="1" placeholder="2" required>
                         </div>
 
                         <div class="field">
-                            <label for="startDate">Start date</label>
-                            <input type="date" id="startDate" required>
+                            <label for="duration">How long</label>
+                            <input type="text" id="duration" placeholder="6 days" required>
                         </div>
+                    </div>
 
+                    <div class="field">
+                        <label for="startDate">Start date</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="division">Division</label>
+                        <select id="division" required>
+                            <option value="">Choose division</option>
+                        </select>
+                    </div>
+
+                    <div class="two">
                         <div class="field">
-                            <label for="division">Division</label>
-                            <select id="division" required>
-                                <option value="">Choose division</option>
+                            <label for="district">District</label>
+                            <select id="district" required>
+                                <option value="">Choose district</option>
                             </select>
                         </div>
 
-                        <div class="two">
-                            <div class="field">
-                                <label for="district">District</label>
-                                <select id="district" required>
-                                    <option value="">Choose district</option>
-                                </select>
-                            </div>
-
-                            <div class="field">
-                                <label for="upazila">Upazila</label>
-                                <select id="upazila" required>
-                                    <option value="">Choose upazila</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="field">
-                            <label for="union">Union or Ward</label>
-                            <input type="text" id="union" placeholder="Name of the union or ward" required>
+                            <label for="upazila">Upazila</label>
+                            <select id="upazila" required>
+                                <option value="">Choose upazila</option>
+                            </select>
                         </div>
-
-                        <div class="field">
-                            <label for="exactLocation">Exact location</label>
-                            <input type="text" id="exactLocation" placeholder="Village, road, house number or a landmark" required>
-                        </div>
-
-                        <div class="field">
-                            <label for="details">Anything else they should know</label>
-                            <textarea id="details" rows="3" placeholder="Tools provided, food given, start time"></textarea>
-                        </div>
-
-                        <div class="field">
-                            <label for="contact">Phone number for this job</label>
-                            <input type="tel" id="contact" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-main">Post the job</button>
-
-                    </form>
-                </div>
-
-                <div class="panel" id="mine">
-                    <h2>My job posts</h2>
-                    <p class="note">Press Close once the work is finished. Then you can rate the worker.</p>
-
-                    <div class="scroll" style="margin-top: 16px;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Job</th>
-                                    <th>Wage</th>
-                                    <th>Where</th>
-                                    <th>State</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="jobTable">
-                                <tr><td colspan="5" class="loading">Loading...</td></tr>
-                            </tbody>
-                        </table>
                     </div>
-                </div>
 
-                <div class="panel" id="people">
-                    <h2>Who applied</h2>
-                    <p class="note">Call them, agree the rate, then press Hire.</p>
-
-                    <div class="scroll" style="margin-top: 16px;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Worker</th>
-                                    <th>Phone</th>
-                                    <th>For the job</th>
-                                    <th>State</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="appTable">
-                                <tr><td colspan="5" class="loading">Loading...</td></tr>
-                            </tbody>
-                        </table>
+                    <div class="field">
+                        <label for="union">Union or Ward</label>
+                        <input type="text" id="union" placeholder="Name of the union or ward" required>
                     </div>
-                </div>
 
-                <div class="panel" id="rate">
-                    <h2>Rate the workers</h2>
-                    <p class="note">Workers you hired on a job you have closed.</p>
-
-                    <div class="scroll" style="margin-top: 16px;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Worker</th>
-                                    <th>Job</th>
-                                    <th>Stars</th>
-                                    <th>A word about them</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="rateTable">
-                                <tr><td colspan="5" class="loading">Loading...</td></tr>
-                            </tbody>
-                        </table>
+                    <div class="field">
+                        <label for="exactLocation">Exact location</label>
+                        <input type="text" id="exactLocation" placeholder="Village, road, house number or a landmark" required>
                     </div>
-                </div>
 
+                    <div class="field">
+                        <label for="details">Anything else they should know</label>
+                        <textarea id="details" rows="3" placeholder="Tools provided, food given, start time"></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="contact">Phone number for this job</label>
+                        <input type="tel" id="contact" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-main">Post the job</button>
+
+                </form>
             </div>
 
         </div>
@@ -212,16 +171,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="lang.js"></script>
+    <script src="icons.js"></script>
     <script src="db.js"></script>
+    <script src="voice.js"></script>
     <script src="locations.js"></script>
 
-    <script>
-    var me = null;
+    <script>    var me = null;
 
     layout("");
 
-    start();
+    addFieldMics();
 
+    start();
 
     async function start() {
 
@@ -232,6 +193,7 @@
         }
 
         setText("userName", me.name);
+        document.getElementById("face").textContent = me.name.charAt(0);
         document.getElementById("contact").value = me.phone;
 
         setText("postNote", autoApprove
@@ -247,7 +209,6 @@
         loadApplicants();
         loadToRate();
     }
-
 
     async function postJob(event) {
 
@@ -287,17 +248,16 @@
         loadMyJobs();
     }
 
-
     async function loadMyJobs() {
 
         var result = await db.from("jobs")
-            .select("id, title, wage, district, upazila, status")
+            .select("id, title, wage, district, upazila, status, job_type")
             .eq("client_id", me.id)
             .order("created_at", { ascending: false });
 
         var rows = result.data;
 
-        draw("jobTable", rows, myJobRow, noRows(5, "You have not posted anything yet."));
+        draw("jobLane", rows, myJobCard, '<p class="empty">You have not posted anything yet.</p>');
 
         var live = 0;
         var wait = 0;
@@ -310,24 +270,25 @@
         setText("countLive", live);
         setText("countWait", wait);
         setText("countAll", rows == null ? 0 : rows.length);
+        setText("n1", rows == null ? 0 : rows.length);
     }
 
-
-    function myJobRow(j) {
+    function myJobCard(j) {
 
         var action = (j.status == "open")
             ? '<button type="button" class="btn-small warn" onclick="closeJob(\'' + j.id + '\')">Close</button>'
-            : '<span class="dim">-</span>';
+            : '';
 
-        return '<tr>'
-            + '<td><a href="job.html?id=' + j.id + '">' + j.title + '</a></td>'
-            + '<td>Tk ' + j.wage + '</td>'
-            + '<td>' + area(j) + '</td>'
-            + '<td><span class="stamp ' + stampFor(j.status) + '">' + j.status + '</span></td>'
-            + '<td>' + action + '</td>'
-            + '</tr>';
+        return '<div class="mini">'
+            + '<div class="mini-top">'
+            +     icon(j.job_type, 20, "#1B5CFF")
+            +     '<span class="stamp ' + stampFor(j.status) + '">' + j.status + '</span>'
+            + '</div>'
+            + '<a href="job.html?id=' + j.id + '"><b>' + j.title + '</b></a>'
+            + '<span class="mini-sub">' + area(j) + '</span>'
+            + '<div class="mini-end"><span class="num">' + money(j.wage) + '</span>' + action + '</div>'
+            + '</div>';
     }
-
 
     async function closeJob(id) {
 
@@ -336,9 +297,9 @@
         showMessage("Job closed. You can rate the worker now.", "success");
 
         loadMyJobs();
+        loadApplicants();
         loadToRate();
     }
-
 
     async function loadApplicants() {
 
@@ -347,26 +308,49 @@
             .eq("jobs.client_id", me.id)
             .order("created_at", { ascending: false });
 
-        draw("appTable", result.data, applicantRow, noRows(5, "Nobody has applied yet."));
+        var rows = result.data;
+        var waiting = [];
+        var hired = [];
+
+        for (var i = 0; rows != null && i < rows.length; i++) {
+            if (rows[i].status == "accepted") {
+                hired.push(rows[i]);
+            } else {
+                waiting.push(rows[i]);
+            }
+        }
+
+        draw("appLane", waiting, applicantCard, '<p class="empty">Nobody has applied yet.</p>');
+        draw("hiredLane", hired, hiredCard, '<p class="empty">You have not hired anyone yet.</p>');
+
+        setText("n2", waiting.length);
+        setText("n3", hired.length);
     }
 
-
-    function applicantRow(a) {
+    function applicantCard(a) {
 
         var action = (a.status == "pending")
-            ? '<button type="button" class="btn-small" onclick="answer(\'' + a.id + '\', \'accepted\')">Hire</button> '
+            ? '<button type="button" class="btn-small" onclick="answer(\'' + a.id + '\', \'accepted\')">Hire</button>'
               + '<button type="button" class="btn-small warn" onclick="answer(\'' + a.id + '\', \'rejected\')">No</button>'
-            : '<span class="dim">-</span>';
+            : '<span class="stamp ' + stampFor(a.status) + '">' + a.status + '</span>';
 
-        return '<tr>'
-            + '<td>' + a.worker_name + '</td>'
-            + '<td>' + a.worker_phone + '</td>'
-            + '<td>' + (a.jobs ? a.jobs.title : "-") + '</td>'
-            + '<td><span class="stamp ' + stampFor(a.status) + '">' + a.status + '</span></td>'
-            + '<td>' + action + '</td>'
-            + '</tr>';
+        return '<div class="mini">'
+            + '<b>' + a.worker_name + '</b>'
+            + '<span class="mini-sub">' + a.worker_phone + '</span>'
+            + '<span class="mini-sub">' + (a.jobs ? a.jobs.title : "-") + '</span>'
+            + '<div class="mini-end">' + action + '</div>'
+            + '</div>';
     }
 
+    function hiredCard(a) {
+
+        return '<div class="mini">'
+            + '<b>' + a.worker_name + '</b>'
+            + '<span class="mini-sub">' + a.worker_phone + '</span>'
+            + '<span class="mini-sub">' + (a.jobs ? a.jobs.title : "-") + '</span>'
+            + '<div class="mini-end"><span class="stamp good">accepted</span></div>'
+            + '</div>';
+    }
 
     async function answer(id, status) {
 
@@ -376,7 +360,6 @@
 
         loadApplicants();
     }
-
 
     async function loadToRate() {
 
@@ -404,27 +387,33 @@
             }
         }
 
-        draw("rateTable", waiting, rateRow, noRows(5, "Nothing to rate right now."));
+        draw("rateLane", waiting, rateCard,
+            '<p class="empty">Nothing to rate right now. Close a finished job first.</p>');
+
+        setText("n4", waiting.length);
     }
 
-
-    function rateRow(a) {
+    function rateCard(a) {
 
         var key = a.job_id + "_" + a.worker_id;
 
-        return '<tr>'
-            + '<td>' + a.worker_name + '</td>'
-            + '<td>' + (a.jobs ? a.jobs.title : "-") + '</td>'
-            + '<td><select id="stars' + key + '">'
-            + '<option value="5">5</option><option value="4">4</option>'
-            + '<option value="3">3</option><option value="2">2</option>'
-            + '<option value="1">1</option></select></td>'
-            + '<td><input type="text" id="note' + key + '" placeholder="Worked well, came on time"></td>'
-            + '<td><button type="button" class="btn-small" '
-            + 'onclick="saveRating(' + a.job_id + ', ' + a.worker_id + ')">Save</button></td>'
-            + '</tr>';
+        return '<div class="mini">'
+            + '<b>' + a.worker_name + '</b>'
+            + '<span class="mini-sub">' + (a.jobs ? a.jobs.title : "-") + '</span>'
+            + '<div class="field" style="margin:10px 0 8px 0">'
+            +     '<select id="stars' + key + '">'
+            +         '<option value="5">5 stars</option><option value="4">4 stars</option>'
+            +         '<option value="3">3 stars</option><option value="2">2 stars</option>'
+            +         '<option value="1">1 star</option>'
+            +     '</select>'
+            + '</div>'
+            + '<div class="field" style="margin:0 0 10px 0">'
+            +     '<input type="text" id="note' + key + '" placeholder="Worked well, came on time">'
+            + '</div>'
+            + '<button type="button" class="btn-small" '
+            +   'onclick="saveRating(' + a.job_id + ', ' + a.worker_id + ')">Save</button>'
+            + '</div>';
     }
-
 
     async function saveRating(jobId, workerId) {
 
@@ -448,8 +437,7 @@
 
         loadToRate();
     }
-
-    </script>
+</script>
 
 </body>
 </html>
