@@ -4,7 +4,6 @@ if (lang == null) {
     lang = "bn";
 }
 
-
 var bnText = {
 
     "Labour Market Place": "লেবার মার্কেট প্লেস",
@@ -300,6 +299,12 @@ var bnText = {
     "Date, place, name of the other person": "তারিখ, জায়গা, অন্য পক্ষের নাম",
     "Write a reply": "উত্তর লিখুন",
 
+    "Fill this form by voice": "কথা বলে ফর্ম পূরণ করুন",
+    "Cannot read or write? Press the button, listen to the question, and answer out loud.": "পড়তে বা লিখতে পারেন না? বাটনে চাপুন, প্রশ্ন শুনুন, মুখে উত্তর দিন।",
+    "Start talking": "কথা বলা শুরু করুন",
+    "Stop": "থামুন",
+    "Press the button to begin.": "শুরু করতে বাটনে চাপুন।",
+
     "About this project": "প্রকল্প পরিচিতি",
     "Why it exists, who it is for, and how it was built.": "কেন বানানো, কাদের জন্য, আর কী দিয়ে বানানো।",
     "The problem": "সমস্যাটি",
@@ -355,9 +360,84 @@ var bnText = {
 
     "When an employer closes a job, he can give every worker he hired a rating out of five and write a line about them. That rating shows on your card on the Find Workers page, so an employer looking for a mason in your district sees it before he calls you.": "নিয়োগদাতা কাজ বন্ধ করলে তিনি নিয়োগ দেওয়া প্রত্যেক শ্রমিককে পাঁচের মধ্যে রেটিং আর এক লাইন মন্তব্য দিতে পারেন। সেই রেটিং শ্রমিক খুঁজুন পাতায় আপনার কার্ডে দেখায়, তাই আপনার জেলায় রাজমিস্ত্রি খুঁজছেন এমন নিয়োগদাতা ফোন করার আগেই সেটা দেখেন।",
 
-    "Nobody can rate you unless they actually hired you on a job that has been closed, and each employer can rate you once per job. Turn up on time, finish what you started, and the rating takes care of itself.": "বন্ধ হওয়া কোনো কাজে সত্যিই আপনাকে নিয়োগ না দিলে কেউ আপনাকে রেটিং দিতে পারে না, আর প্রতিটি কাজে একজন নিয়োগদাতা একবারই দিতে পারেন। সময়মতো আসুন, শুরু করা কাজ শেষ করুন, রেটিং নিজেই ঠিক হয়ে যাবে।"
-};
+    "Nobody can rate you unless they actually hired you on a job that has been closed, and each employer can rate you once per job. Turn up on time, finish what you started, and the rating takes care of itself.": "বন্ধ হওয়া কোনো কাজে সত্যিই আপনাকে নিয়োগ না দিলে কেউ আপনাকে রেটিং দিতে পারে না, আর প্রতিটি কাজে একজন নিয়োগদাতা একবারই দিতে পারেন। সময়মতো আসুন, শুরু করা কাজ শেষ করুন, রেটিং নিজেই ঠিক হয়ে যাবে।",
 
+    "What did you come here to do? Press one.": "আপনি কী করতে এসেছেন? একটায় চাপ দিন।",
+    "I am looking for work": "আমি কাজ খুঁজছি",
+    "Where the work is today, and what it pays": "আজ কোথায় কাজ আছে, কত মজুরি",
+    "I need workers": "আমার লোক দরকার",
+    "Post a job, find a tradesman": "কাজ পোস্ট করুন, মিস্ত্রি খুঁজে নিন",
+    "Today's market": "আজকের হাট",
+    "The jobs that are open right now": "এই মুহূর্তে যে কাজগুলো খোলা আছে",
+    "See all work": "সব কাজ দেখুন",
+    "What work are you after?": "কী কাজ খুঁজছেন?",
+    "Cannot read? Just speak": "পড়তে পারেন না? কথা বলেই হবে",
+    "Press the microphone. The site asks, you answer out loud.\n                       You may say it any way you like.": "মাইকে চাপ দিন। সাইট প্রশ্ন করবে, আপনি মুখে উত্তর দেবেন। যেভাবে খুশি বলতে পারেন।",
+    "Press the microphone. The site asks, you answer out loud. You may say it any way you like.": "মাইকে চাপ দিন। সাইট প্রশ্ন করবে, আপনি মুখে উত্তর দেবেন। যেভাবে খুশি বলতে পারেন।",
+    "Start": "শুরু করুন",
+    "The numbers today": "আজকের হিসাব",
+    "Speak instead": "কথা বলে করুন",
+    "Open": "খুলুন",
+    "avg": "গড়",
+    "Press a tool to see only that kind of work.": "কোনো একটা যন্ত্রে চাপ দিলে শুধু সেই কাজ দেখাবে।",
+    "Show everything": "সব দেখান",
+    "jobs found": "টি কাজ পাওয়া গেল",
+    "hands": "জন লাগবে",
+    "Filled": "পূরণ হয়ে গেছে",
+    "Work order": "কাজের স্লিপ",
+    "per day, per person": "জনপ্রতি দৈনিক",
+    "hands needed": "জন লাগবে",
+    "how long": "কতদিন",
+    "Lowest to highest paid": "সবচেয়ে কম থেকে সবচেয়ে বেশি",
+    "posts": "টি পোস্ট",
+    "My daily rate": "আমার দৈনিক মজুরি",
+
+    "Register by voice": "কথা বলে নিবন্ধন",
+    "Press start": "শুরু বাটনে চাপুন",
+    "I will ask, you answer": "আমি প্রশ্ন করব, আপনি উত্তর দেবেন",
+    "Listening, go ahead": "শুনছি, বলুন",
+    "Say it any way you like": "যেভাবে খুশি বলতে পারেন",
+    "Listen to the question": "প্রশ্নটা শুনুন",
+    "Then answer out loud": "তারপর মুখে উত্তর দিন",
+    "Yes, right": "হ্যাঁ, ঠিক",
+    "No, again": "না, আবার",
+    "You said": "আপনি বলেছেন",
+    "Voice does not work in this browser. Open it in Chrome.": "এই ব্রাউজারে ভয়েস কাজ করে না। Chrome দিয়ে খুলুন।",
+    "Press a tool to see only that kind of worker.": "কোনো একটা যন্ত্রে চাপ দিলে শুধু সেই কাজের লোক দেখাবে।",
+    "A job moves from left to right: you post it, people apply, you hire, and when the work is done you rate them.": "কাজ বাঁ দিক থেকে ডানে যায়: আপনি পোস্ট করেন, লোকে আবেদন করে, আপনি নিয়োগ দেন, কাজ শেষ হলে রেটিং দেন।",
+    "Hired": "নিয়োগ দেওয়া",
+    "You have not hired anyone yet.": "আপনি এখনো কাউকে নিয়োগ দেননি।",
+    "Nothing to rate right now. Close a finished job first.": "এখন রেটিং দেওয়ার কিছু নেই। আগে শেষ হওয়া কাজটি বন্ধ করুন।",
+    "5 stars": "৫ তারা",
+    "4 stars": "৪ তারা",
+    "3 stars": "৩ তারা",
+    "2 stars": "২ তারা",
+    "1 star": "১ তারা",
+    "Control room": "নিয়ন্ত্রণ কক্ষ",
+    "The Day Book": "দিনলিপি",
+
+    "needed": "লাগবে",
+
+    "There is work today.": "আজ কাজ আছে।",
+    "The wage is already set.": "মজুরিও ঠিক করা আছে।",
+    "An employer writes the job and the daily wage. Workers see it, apply, and talk to him on the phone. Nobody in the middle takes a cut of the wage.": "নিয়োগদাতা কাজ আর দৈনিক মজুরি লিখে দেন। শ্রমিক দেখেন, আবেদন করেন, ফোনে সরাসরি কথা বলেন। মাঝখানে কেউ মজুরি থেকে ভাগ নেয় না।",
+    "Today in Bangladesh": "আজ বাংলাদেশে",
+    "jobs open right now": "টি কাজ এখন খোলা",
+    "Where the work is, and what it pays": "কোথায় কাজ আছে, কত মজুরি",
+    "Cannot read or write?": "পড়তে বা লিখতে পারেন না?",
+    "There is a small microphone beside every box. Press it and I will ask out loud, you answer, and I write it down for you.": "প্রতিটা ঘরের পাশে ছোট একটা মাইক আছে। চাপ দিলে আমি মুখে জিজ্ঞেস করব, আপনি উত্তর দেবেন, আমি লিখে দেব।",
+    "Ask me everything": "সব ঘর একে একে জিজ্ঞেস করুন",
+    "Or show your NID card": "অথবা আপনার NID কার্ড দেখান",
+    "Take a photo of both sides. The name and address are copied into the form for you.": "দুই পিঠের ছবি তুলুন। নাম আর ঠিকানা নিজে নিজে ফর্মে বসে যাবে।",
+    "Front side": "সামনের পিঠ",
+    "Back side": "পেছনের পিঠ",
+    "Read the card": "কার্ড পড়ুন",
+
+    "NID number": "NID নম্বর",
+    "Not required, or read from the card": "দিতে হবে না, কার্ড থেকেও আসতে পারে",
+
+    "Test the n8n link": "n8n সংযোগ পরীক্ষা করুন"
+};
 
 function t(text) {
 
@@ -373,7 +453,6 @@ function t(text) {
 
     return word;
 }
-
 
 function translateInside(node) {
 
@@ -397,7 +476,6 @@ function translateInside(node) {
         }
     }
 }
-
 
 function applyLanguage() {
 
@@ -424,12 +502,10 @@ function applyLanguage() {
     }
 }
 
-
 function langButton() {
     return '<li><button type="button" class="btn btn-line btn-lang" onclick="switchLang()">'
          + (lang == "bn" ? "EN" : "বাংলা") + '</button></li>';
 }
-
 
 function switchLang() {
 
