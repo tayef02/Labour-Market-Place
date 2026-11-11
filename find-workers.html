@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Find Workers | Labour Market Place</title>
 </head>
@@ -15,25 +15,24 @@
     <main>
         <section class="page-top">
             <h1>Find workers</h1>
-            <p>Pick a district and a trade, then call the worker yourself.</p>
+            <p>Press a tool to see only that kind of worker.</p>
         </section>
 
         <div class="wrap">
 
-            <div class="panel">
+            <div class="filter-strip" id="strip"></div>
+
+            <div class="panel" style="padding:18px 20px">
                 <div class="two">
-                    <div class="field">
+                    <div class="field" style="margin-bottom:0">
                         <label for="district">District</label>
-                        <select id="district"></select>
+                        <select id="district" onchange="loadWorkers()"></select>
                     </div>
 
-                    <div class="field">
-                        <label for="skill">Trade</label>
-                        <select id="skill"></select>
+                    <div class="field" style="margin-bottom:0; align-self:end">
+                        <button type="button" class="btn btn-soft btn-wide" onclick="clearAll()">Show everything</button>
                     </div>
                 </div>
-
-                <button type="button" class="btn btn-main" onclick="loadWorkers()">Search</button>
             </div>
 
             <div id="message" class="msg"></div>
@@ -51,19 +50,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="lang.js"></script>
+    <script src="icons.js"></script>
     <script src="db.js"></script>
 
-    <script>
-    var me = currentUser();
+    <script>    var me = currentUser();
     var scores = {};
 
     layout("find-workers.html");
 
     fillList("district", districtList, "All districts");
-    fillList("skill", tradeList, "All trades");
 
+    var pickedTrade = "";
+
+    drawStrip();
     loadWorkers();
 
+    function drawStrip() {
+
+        var html = "";
+
+        for (var i = 0; i < tradeList.length; i++) {
+            var trade = tradeList[i];
+            var on = (trade == pickedTrade);
+
+            html = html
+                + '<button type="button" class="pick' + (on ? " on" : "") + '"'
+                +   ' onclick="pickTrade(\'' + trade + '\')">'
+                +   icon(trade, 30, on ? "#ffffff" : "#1B5CFF")
+                +   '<span>' + trade + '</span>'
+                + '</button>';
+        }
+
+        document.getElementById("strip").innerHTML = html;
+        applyLanguage();
+    }
+
+    function pickTrade(trade) {
+        pickedTrade = (pickedTrade == trade) ? "" : trade;
+        drawStrip();
+        loadWorkers();
+    }
+
+    function clearAll() {
+        pickedTrade = "";
+        document.getElementById("district").value = "";
+        drawStrip();
+        loadWorkers();
+    }
 
     async function loadWorkers() {
 
@@ -78,8 +111,8 @@
             query = query.eq("district", val("district"));
         }
 
-        if (val("skill") != "") {
-            query = query.eq("skill", val("skill"));
+        if (pickedTrade != "") {
+            query = query.eq("skill", pickedTrade);
         }
 
         var result = await query.order("created_at", { ascending: false });
@@ -104,7 +137,6 @@
         draw("list", rows, workerCard, "");
     }
 
-
     function workerCard(w) {
 
         var phone = (me == null)
@@ -112,21 +144,24 @@
             : w.phone;
 
         return '<div class="card">'
-            + '<div class="card-head">'
-            + '<h3>' + w.name + '</h3>'
-            + '<div class="wage">Tk ' + (w.daily_rate || "-") + '<small>per day</small></div>'
+            + '<span class="face small">' + w.name.charAt(0) + '</span>'
+            + '<div class="card-body">'
+            +     '<p class="trade">' + icon(w.skill, 16, "#1B5CFF")
+            +         (w.skill || "trade not set") + '</p>'
+            +     '<h3>' + w.name + '</h3>'
+            +     '<ul class="facts">'
+            +         '<li>' + area(w) + '</li>'
+            +         '<li>' + starBar(scores[w.id]) + '</li>'
+            +         '<li>' + phone + '</li>'
+            +     '</ul>'
+            +     (w.about ? '<p class="dim" style="margin:10px 0 0 0">' + w.about + '</p>' : '')
             + '</div>'
-            + '<p class="trade">' + (w.skill || "trade not set") + '</p>'
-            + '<ul class="facts">'
-            + '<li><span>Area</span> ' + area(w) + '</li>'
-            + '<li><span>Rating</span> ' + starBar(scores[w.id]) + '</li>'
-            + '<li><span>Phone</span> ' + phone + '</li>'
-            + '</ul>'
-            + '<p class="dim">' + (w.about || "") + '</p>'
+            + '<div class="card-end">'
+            +     '<div class="wage">' + money(w.daily_rate || "-") + '<small>per day</small></div>'
+            + '</div>'
             + '</div>';
     }
-
-    </script>
+</script>
 
 </body>
 </html>
