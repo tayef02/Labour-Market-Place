@@ -17,7 +17,6 @@ var divisionList = {
     "Sylhet": ["Habiganj", "Moulvibazar", "Sunamganj", "Sylhet"]
 };
 
-
 var districtList = {
 
     "Bagerhat": ["Bagerhat Sadar", "Chitalmari", "Fakirhat", "Kachua", "Mollahat", "Mongla", "Morrelganj", "Rampal", "Sarankhola"],
@@ -149,26 +148,27 @@ var districtList = {
     "Thakurgaon": ["Baliadangi", "Haripur", "Pirganj", "Ranisankail", "Thakurgaon Sadar"]
 };
 
-
 function fillBox(boxId, list, firstLine) {
     var html = '<option value="">' + firstLine + '</option>';
 
     for (var i = 0; i < list.length; i++) {
-        html = html + '<option>' + list[i] + '</option>';
+        html = html + '<option value="' + list[i] + '">' + list[i] + '</option>';
     }
 
     var box = document.getElementById(boxId);
     box.innerHTML = html;
     box.disabled = false;
-}
 
+    applyLanguage();
+}
 
 function emptyBox(boxId, firstLine) {
     var box = document.getElementById(boxId);
     box.innerHTML = '<option value="">' + firstLine + '</option>';
     box.disabled = true;
-}
 
+    applyLanguage();
+}
 
 function setupLocation(divisionId, districtId, upazilaId) {
 
