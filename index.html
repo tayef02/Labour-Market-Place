@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Home | Labour Market Place</title>
 </head>
@@ -13,36 +13,76 @@
     <header class="topbar" id="nav"></header>
 
     <main>
+
         <section class="hero">
             <div class="hero-inner">
 
-                <div>
-                    <span class="eyebrow">Day labour &middot; Bangladesh</span>
-                    <h1>Work today, at a rate you both agreed.</h1>
-                    <p>Employers post the job and the daily wage. Workers see it, apply, and
-                       talk directly. No middle man taking a cut from the wage.</p>
+                <div class="hero-words">
+                    <p class="kicker" id="heroCount">Today in Bangladesh</p>
 
-                    <div class="hero-buttons">
-                        <a href="jobs.html" class="btn btn-main">See today's work</a>
-                        <a href="find-workers.html" class="btn btn-line">Find a worker</a>
+                    <h1>There is work today.<br><em>The wage is already set.</em></h1>
+
+                    <p class="hero-sub">An employer writes the job and the daily wage. Workers
+                       see it, apply, and talk to him on the phone. Nobody in the middle takes
+                       a cut of the wage.</p>
+
+                    <div class="hero-go">
+                        <a href="jobs.html" class="go-one">
+                            <span id="doorIcon1"></span>
+                            <span>
+                                <b>I am looking for work</b>
+                                <span>Where the work is, and what it pays</span>
+                            </span>
+                        </a>
+
+                        <a href="find-workers.html" class="go-one">
+                            <span id="doorIcon2"></span>
+                            <span>
+                                <b>I need workers</b>
+                                <span>Post a job, find a tradesman</span>
+                            </span>
+                        </a>
                     </div>
                 </div>
 
-                <div class="sheet">
-                    <div class="sheet-top">
-                        <b>Posted recently</b>
-                        <span id="boardCount"></span>
-                    </div>
-
-                    <div id="board">
-                        <p class="row"><span>Loading...</span></p>
-                    </div>
+                <div class="hero-art">
+                    <img src="site-art.svg" alt="">
                 </div>
 
             </div>
         </section>
 
         <div class="wrap">
+
+            <div class="msg" id="message"></div>
+
+            <div class="market-head">
+                <div>
+                    <h2 class="title" style="margin-bottom:0">Today's market</h2>
+                    <p class="note">The jobs that are open right now</p>
+                </div>
+                <a href="jobs.html">See all work</a>
+            </div>
+
+            <div class="market" id="board">
+                <p class="loading" style="padding:18px 20px">Loading...</p>
+            </div>
+
+            <h2 class="title" style="margin-top:38px">What work are you after?</h2>
+
+            <div class="trade-grid" id="tradeGrid"></div>
+
+            <div class="panel voice-box" style="margin-top:38px; display:flex; flex-wrap:wrap; gap:20px; align-items:center">
+                <span id="voiceIcon" class="round-hi"></span>
+                <div style="flex:999 1 300px; min-width:0">
+                    <h2>Cannot read? Just speak</h2>
+                    <p class="note">Press the microphone. The site asks, you answer out loud.
+                       You may say it any way you like.</p>
+                </div>
+                <a href="register.html?voice=1" class="btn btn-main">Start</a>
+            </div>
+
+            <h2 class="title" style="margin-top:38px">The numbers today</h2>
 
             <div class="tiles">
                 <div class="tile">
@@ -63,7 +103,7 @@
                 </div>
             </div>
 
-            <h2 class="title">How it works</h2>
+            <h2 class="title" style="margin-top:38px">How it works</h2>
 
             <div class="steps">
                 <div class="step">
@@ -91,14 +131,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="lang.js"></script>
+    <script src="icons.js"></script>
     <script src="db.js"></script>
 
-    <script>
-    layout("index.html");
+    <script>    layout("index.html");
+
+    document.getElementById("doorIcon1").innerHTML = icon("worker", 40, "#1B5CFF");
+    document.getElementById("doorIcon2").innerHTML = icon("boss", 40, "#1B5CFF");
+    document.getElementById("voiceIcon").innerHTML = icon("mic", 32, "#ffffff");
 
     loadNumbers();
     loadBoard();
-
+    loadTrades();
 
     async function loadNumbers() {
 
@@ -107,10 +151,9 @@
         setText("countWorkers", await countRows("users", "role", "worker"));
         setText("countClients", await countRows("users", "role", "client"));
         setText("countOpen", open);
+        setText("heroCount", open + " " + t("jobs open right now"));
         setText("countDone", await countRows("jobs", "status", "closed"));
-        setText("boardCount", open + " " + t("open"));
     }
-
 
     async function loadBoard() {
 
@@ -118,28 +161,72 @@
             .select("*")
             .eq("status", "open")
             .order("created_at", { ascending: false })
-            .limit(4);
+            .limit(5);
 
         if (result.error != null) {
             document.getElementById("board").innerHTML =
-                '<div class="row"><span>Could not load the list.</span></div>';
+                '<p class="loading" style="padding:18px 20px">Could not load the list.</p>';
             return;
         }
 
         draw("board", result.data, boardRow,
-            '<div class="row"><span>No open work right now.</span></div>');
+            '<p class="loading" style="padding:18px 20px">No open work right now.</p>');
     }
-
 
     function boardRow(j) {
 
-        return '<div class="row">'
-            + '<div><b>' + j.job_type + '</b><span>' + area(j) + '</span></div>'
-            + '<div class="rate">Tk ' + j.wage + '</div>'
+        return '<div class="market-row">'
+            + icon(j.job_type, 38, "#1B5CFF")
+            + '<div class="who-job">'
+            +     '<b>' + j.job_type + ' &middot; ' + (j.workers_needed || 1) + '</b>'
+            +     '<span>' + area(j) + '</span>'
+            + '</div>'
+            + '<div class="rate">' + money(j.wage) + '</div>'
+            + '<a href="job.html?id=' + j.id + '" class="btn-small">Open</a>'
             + '</div>';
     }
 
-    </script>
+    async function loadTrades() {
+
+        var result = await db.from("jobs").select("job_type, wage");
+        var rows = result.data;
+        var totals = {};
+
+        if (rows != null) {
+            for (var i = 0; i < rows.length; i++) {
+                var name = rows[i].job_type;
+
+                if (totals[name] == null) {
+                    totals[name] = { sum: 0, count: 0 };
+                }
+
+                totals[name].sum = totals[name].sum + rows[i].wage;
+                totals[name].count = totals[name].count + 1;
+            }
+        }
+
+        var html = "";
+
+        for (var k = 0; k < 5; k++) {
+            var trade = tradeList[k];
+            var line = "";
+
+            if (totals[trade] != null) {
+                line = money(Math.round(totals[trade].sum / totals[trade].count)) + " " + t("avg");
+            }
+
+            html = html
+                + '<a class="trade-btn" href="jobs.html?trade=' + trade + '">'
+                +     icon(trade, 34, "#1B5CFF")
+                +     '<b>' + trade + '</b>'
+                +     '<span>' + line + '</span>'
+                + '</a>';
+        }
+
+        document.getElementById("tradeGrid").innerHTML = html;
+        applyLanguage();
+    }
+</script>
 
 </body>
 </html>
