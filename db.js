@@ -3,26 +3,25 @@ var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIs
 
 var db = supabase.createClient(supabaseUrl, supabaseKey);
 
+var voiceHook = "https://n8n-d5pc.srv1980546.hstgr.cloud/webhook/voice";
+var nidHook = "https://n8n-d5pc.srv1980546.hstgr.cloud/webhook/nid";
+
 var homePage = {
     worker: "worker-dashboard.html",
     client: "client-dashboard.html",
     admin: "admin-panel.html"
 };
 
-
 var autoApprove = true;
-
 
 function newJobStatus() {
     return autoApprove ? "open" : "pending";
 }
 
-
 var tradeList = [
     "Mason", "Helper", "Electrician", "Plumber", "Carpenter",
     "Painter", "Cleaner", "Cook", "Loader", "Driver"
 ];
-
 
 var districtList = [
     "Bagerhat", "Bandarban", "Barguna", "Barisal", "Bhola",
@@ -40,11 +39,9 @@ var districtList = [
     "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"
 ];
 
-
 function saveUser(user) {
     localStorage.setItem("lmp_user", JSON.stringify(user));
 }
-
 
 function currentUser() {
     var data = localStorage.getItem("lmp_user");
@@ -56,12 +53,10 @@ function currentUser() {
     return JSON.parse(data);
 }
 
-
 function logout() {
     localStorage.removeItem("lmp_user");
     window.location.href = "login.html";
 }
-
 
 function requireRole(allowed) {
     var user = currentUser();
@@ -79,7 +74,6 @@ function requireRole(allowed) {
     return user;
 }
 
-
 var menuLinks = [
     ["index.html", "Home"],
     ["jobs.html", "Jobs"],
@@ -89,7 +83,6 @@ var menuLinks = [
     ["complaints.html", "Help"],
     ["about.html", "About"]
 ];
-
 
 function layout(here) {
 
@@ -116,19 +109,37 @@ function layout(here) {
     document.getElementById("foot").innerHTML =
         "<p>Labour Market Place &mdash; a fair day's work at a fair day's rate.</p>";
 
+    addMicPill();
+
     applyLanguage();
 }
 
+function addMicPill() {
+
+    if (document.getElementById("micFloat") != null) {
+        return;
+    }
+
+    var pill = document.createElement("a");
+    pill.id = "micFloat";
+    pill.className = "mic-float";
+    pill.href = "register.html?voice=1";
+    pill.innerHTML = '<i>' + icon("mic", 24, "#ffffff") + '</i><span>Speak instead</span>';
+
+    document.body.appendChild(pill);
+}
+
+function money(amount) {
+    return (lang == "bn" ? "\u09F3" : "Tk ") + amount;
+}
 
 function val(id) {
     return document.getElementById(id).value.trim();
 }
 
-
 function setText(id, text) {
     document.getElementById(id).textContent = t(text);
 }
-
 
 function showMessage(text, type) {
     var box = document.getElementById("message");
@@ -137,7 +148,6 @@ function showMessage(text, type) {
     box.style.display = "block";
     box.scrollIntoView({ block: "center" });
 }
-
 
 function draw(boxId, rows, makeRow, emptyText) {
 
@@ -160,17 +170,14 @@ function draw(boxId, rows, makeRow, emptyText) {
     applyLanguage();
 }
 
-
 function noRows(columns, text) {
     return '<tr><td colspan="' + columns + '" class="empty">' + text + '</td></tr>';
 }
-
 
 async function countRows(table, column, value) {
     var result = await db.from(table).select("id", { count: "exact", head: true }).eq(column, value);
     return result.count;
 }
-
 
 function fillList(boxId, list, firstLine) {
 
@@ -184,7 +191,6 @@ function fillList(boxId, list, firstLine) {
 
     applyLanguage();
 }
-
 
 function stampFor(status) {
 
@@ -203,16 +209,13 @@ function stampFor(status) {
     return "wait";
 }
 
-
 function area(row) {
     return (row.upazila || "-") + ", " + (row.district || "-");
 }
 
-
 function idFromUrl() {
     return new URLSearchParams(window.location.search).get("id");
 }
-
 
 function starBar(score) {
 
@@ -229,7 +232,6 @@ function starBar(score) {
 
     return '<span class="stars">' + line + '</span> ' + score.toFixed(1);
 }
-
 
 async function averageStars(workerIds) {
 
@@ -265,7 +267,6 @@ async function averageStars(workerIds) {
 
     return averages;
 }
-
 
 async function applyToJob(jobId) {
 
