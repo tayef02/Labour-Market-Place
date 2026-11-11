@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Wage Rates | Labour Market Place</title>
 </head>
@@ -32,21 +32,13 @@
             <p class="dim" id="count"></p>
 
             <div class="panel">
-                <div class="scroll">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Trade</th>
-                                <th>Jobs posted</th>
-                                <th>Lowest</th>
-                                <th>Average</th>
-                                <th>Highest</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rateTable">
-                            <tr><td colspan="5" class="loading">Loading...</td></tr>
-                        </tbody>
-                    </table>
+                <div class="range-key">
+                    <span><i class="k-band"></i>Lowest to highest paid</span>
+                    <span><i class="k-avg"></i>Average</span>
+                </div>
+
+                <div id="rateTable">
+                    <p class="loading">Loading...</p>
                 </div>
 
                 <p class="note">A daily wage, in taka. Treat it as a guide, not a fixed price.</p>
@@ -59,15 +51,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="lang.js"></script>
+    <script src="icons.js"></script>
     <script src="db.js"></script>
 
-    <script>
-    layout("wage-rates.html");
+    <script>    layout("wage-rates.html");
 
     fillList("district", districtList, "All districts");
 
     loadRates();
-
 
     async function loadRates() {
 
@@ -81,16 +72,26 @@
         var rows = result.data;
 
         if (rows == null || rows.length == 0) {
-            document.getElementById("rateTable").innerHTML = noRows(5, "No job posted here yet.");
+            document.getElementById("rateTable").innerHTML =
+                '<p class="empty">No job posted here yet.</p>';
             setText("count", "");
             return;
         }
 
         setText("count", t("Worked out from") + " " + rows.length + " " + t("job posts."));
 
-        draw("rateTable", groupByTrade(rows), rateRow, noRows(5, "No job posted here yet."));
+        var list = groupByTrade(rows);
+
+        topWage = 1;
+
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].high > topWage) { topWage = list[i].high; }
+        }
+
+        draw("rateTable", list, rateRow, '<p class="empty">No job posted here yet.</p>');
     }
 
+    var topWage = 1;
 
     function groupByTrade(rows) {
 
@@ -124,19 +125,28 @@
         return list;
     }
 
-
     function rateRow(r) {
 
-        return '<tr>'
-            + '<td>' + r.trade + '</td>'
-            + '<td>' + r.count + '</td>'
-            + '<td>Tk ' + r.low + '</td>'
-            + '<td><b>Tk ' + r.average + '</b></td>'
-            + '<td>Tk ' + r.high + '</td>'
-            + '</tr>';
-    }
+        var left = (r.low / topWage) * 100;
+        var width = ((r.high - r.low) / topWage) * 100;
 
-    </script>
+        if (width < 2) { width = 2; }
+
+        var tick = (r.average / topWage) * 100;
+
+        return '<div class="range-row">'
+            + icon(r.trade, 26, "#1B5CFF")
+            + '<b>' + r.trade + '</b>'
+            + '<div class="range-track" title="' + money(r.low) + ' - ' + money(r.high) + '">'
+            +     '<i></i>'
+            +     '<u style="left:' + left + '%; width:' + width + '%"></u>'
+            +     '<s style="left:' + tick + '%"></s>'
+            + '</div>'
+            + '<span class="num range-end">' + money(r.average) + '</span>'
+            + '<span class="range-count">' + r.count + ' ' + t("posts") + '</span>'
+            + '</div>';
+    }
+</script>
 
 </body>
 </html>
