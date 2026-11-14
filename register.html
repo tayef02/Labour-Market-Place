@@ -30,7 +30,6 @@
                 <div class="helper-buttons">
                     <button type="button" class="btn btn-main" onclick="askEveryField()">Ask me everything</button>
                     <button type="button" class="btn btn-line" onclick="stopVoice()">Stop</button>
-                    <button type="button" class="btn btn-soft" onclick="testHooks()">Test the n8n link</button>
                 </div>
 
                 <div class="vstat" id="hookTest"></div>
@@ -172,19 +171,24 @@
     <script src="nid.js"></script>
     <script src="locations.js"></script>
 
-    <script>    layout("register.html");
+    <script>
+    layout("register.html");
 
     setupLocation("division", "district", "upazila");
 
     document.getElementById("helperIcon").innerHTML = icon("mic", 30, "#ffffff");
 
+    /* One microphone beside every box on the page. */
     addFieldMics();
 
+    /* The floating microphone on the other pages sends people here
+       with ?voice=1, so the asking should start by itself.        */
     if (new URLSearchParams(window.location.search).get("voice") == "1") {
         askEveryField();
     }
 
     document.getElementById("registerForm").addEventListener("submit", register);
+
 
     async function register(event) {
 
@@ -244,7 +248,8 @@
             window.location.href = "login.html";
         }, 1400);
     }
-</script>
+
+    </script>
 
 </body>
 </html>
