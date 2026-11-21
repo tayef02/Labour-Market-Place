@@ -18,7 +18,6 @@ export async function serverClient() {
               cookieStore.set(name, value, options);
             });
           } catch {
-        
           }
         },
       },

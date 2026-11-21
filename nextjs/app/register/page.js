@@ -37,6 +37,7 @@ export default function Register() {
 
     setMessage("অ্যাকাউন্ট হয়ে গেছে।");
     router.push("/");
+    router.refresh();
   }
 
   return (

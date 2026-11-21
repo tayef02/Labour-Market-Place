@@ -35,8 +35,16 @@ export default async function JobDetail({ params }) {
   return (
     <div>
       <h1>{job.title}</h1>
-      <p>{job.job_type} · {job.wage} টাকা · {job.workers_needed} জন</p>
-      <p>{job.upazila}, {job.district}</p>
+
+      <p>
+        {job.job_type} · {job.wage} টাকা · {job.workers_needed} জন
+      </p>
+
+      <p>
+        {job.upazila}, {job.district}
+      </p>
+
+      <p>{job.address}</p>
       <p>{job.details}</p>
       <p>ফোন: {job.contact_phone}</p>
 

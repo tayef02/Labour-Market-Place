@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
       <body>
         <Header />
         <main>{children}</main>
-        <footer>এখানে ফুটার</footer>
+        <footer>লেবার মার্কেট প্লেস</footer>
       </body>
     </html>
   );

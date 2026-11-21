@@ -28,7 +28,7 @@ export default async function Header() {
 
       {profile ? (
         <>
-                  <Link href="/dashboard">{profile.name}</Link>
+          <Link href="/dashboard">{profile.name}</Link>
           <Logout />
         </>
       ) : (

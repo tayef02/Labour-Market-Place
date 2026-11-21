@@ -1,0 +1,60 @@
+:root {
+    --ink: #0F1623;
+    --blue: #1B5CFF;
+    --paper: #F6F8FB;
+    --card: #FFFFFF;
+    --line: #E6EBF2;
+    --muted: #5B6472;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: system-ui, sans-serif;
+}
+
+header {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 32px;
+}
+
+header a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+header a:hover {
+    color: var(--blue);
+}
+
+header button {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font: inherit;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+header button:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+main {
+    padding: 24px 32px;
+}
+
+footer {
+    padding: 24px 32px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+}

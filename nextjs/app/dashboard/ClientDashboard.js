@@ -28,30 +28,39 @@ export default async function ClientDashboard({ profile }) {
       <h1>{profile.name}</h1>
 
       <h2>আমার পোস্ট করা কাজ</h2>
-      <Link href="/post-job">নতুন কাজ পোস্ট করুন</Link>
 
-      {jobs.length === 0 && <p>এখনো কিছু পোস্ট করেননি।</p>}
+      <p>
+        <Link href="/post-job">নতুন কাজ পোস্ট করুন</Link>
+      </p>
 
-      {jobs.map((j) => (
-        <div key={j.id}>
-          <b>{j.title}</b>
-          <p>{j.job_type} · {j.wage} টাকা</p>
-        </div>
-      ))}
+      {(!jobs || jobs.length === 0) && <p>এখনো কিছু পোস্ট করেননি।</p>}
+
+      {jobs &&
+        jobs.map((j) => (
+          <div key={j.id}>
+            <b>{j.title}</b>
+            <p>
+              {j.job_type} · {j.wage} টাকা
+            </p>
+          </div>
+        ))}
 
       <h2>আবেদনকারী</h2>
 
-      {applications.length === 0 && <p>এখনো কেউ আবেদন করেনি।</p>}
+      {(!applications || applications.length === 0) && (
+        <p>এখনো কেউ আবেদন করেনি।</p>
+      )}
 
-      {applications.map((a) => (
-        <div key={a.id}>
-          <b>{a.worker_name}</b>
-          <p>
-            {a.jobs.title} · {a.worker_phone} · {statusText[a.status]}
-          </p>
-          {a.status === "pending" && <ApplicantActions id={a.id} />}
-        </div>
-      ))}
+      {applications &&
+        applications.map((a) => (
+          <div key={a.id}>
+            <b>{a.worker_name}</b>
+            <p>
+              {a.jobs.title} · {a.worker_phone} · {statusText[a.status]}
+            </p>
+            {a.status === "pending" && <ApplicantActions id={a.id} />}
+          </div>
+        ))}
     </div>
   );
 }

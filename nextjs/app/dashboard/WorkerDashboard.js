@@ -20,17 +20,20 @@ export default async function WorkerDashboard({ profile }) {
       <h1>{profile.name}</h1>
       <h2>আমার আবেদন</h2>
 
-      {applications.length === 0 && <p>এখনো কোনো আবেদন করেননি।</p>}
+      {(!applications || applications.length === 0) && (
+        <p>এখনো কোনো আবেদন করেননি।</p>
+      )}
 
-      {applications.map((a) => (
-        <div key={a.id}>
-          <b>{a.jobs.title}</b>
-          <p>
-            {a.jobs.wage} টাকা · {a.jobs.upazila}, {a.jobs.district} ·{" "}
-            {statusText[a.status]}
-          </p>
-        </div>
-      ))}
+      {applications &&
+        applications.map((a) => (
+          <div key={a.id}>
+            <b>{a.jobs.title}</b>
+            <p>
+              {a.jobs.wage} টাকা · {a.jobs.upazila}, {a.jobs.district} ·{" "}
+              {statusText[a.status]}
+            </p>
+          </div>
+        ))}
     </div>
   );
 }
